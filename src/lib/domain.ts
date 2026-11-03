@@ -121,11 +121,22 @@ export interface Verdict {
   to: string | null;
   basis: "oficial" | "estimacion" | "sin_datos";
   facts: { label: string; value: string }[];
+  /** Momento de emisión del dato que sostiene el veredicto (aviso del SMN o corrida del modelo). */
+  issuedAt: string | null;
+  issuedBy: string | null;
+}
+
+export interface ModelRun {
+  label: string;
+  init: string;
+  available: string;
 }
 
 export interface PointRisk {
   point: { lat: number; lon: number; snappedTo: number };
   verdict: Verdict;
+  /** Corridas de modelo usadas: el momento exacto de cada pronóstico. */
+  runs: { forecast: ModelRun | null; ensembles: ModelRun[] };
   generatedAt: string;
   official: OfficialAlert[];
   assessments: PhenomenonAssessment[];

@@ -11,7 +11,8 @@ así la documentación y el producto no divergen.
 | INA — a5 (RHN) | Acceso probado | 2026-11-02 | Etiquetas de lluvia diaria |
 | Open-Meteo (pronósticos, ensambles, corridas previas, DEM) | Acceso probado | 2026-11-02 | Lluvia, granizo, topografía |
 | NOAA GOES-19 (GLM/ABI) en AWS | Acceso probado | 2026-11-02 | Pendiente: decodificar NetCDF |
-| RainViewer | Acceso probado | 2026-11-02 | Capa visual |
+| NASA GIBS — GOES-19 infrarrojo | Acceso probado | 2026-11-03 | Pantalla Radar |
+| RainViewer | Descartada: no cubre Córdoba | 2026-11-03 | — |
 | IDECOR (GeoServer) | Acceso probado | 2026-11-02 | Pendiente: Carlos Paz |
 | SINARAME / RMA1 | Bloqueada (convenio) | — | Nowcasting, granizo en altura |
 | OHMC / SIHM-APRHI | Bloqueada (sin respuesta, convenio) | 2026-11-02 | Intensidad subdiaria |

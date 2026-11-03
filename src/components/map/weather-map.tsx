@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { COVERAGE } from "@/lib/geo";
 
 export interface MapPlace { id: string; label: string; lat: number; lon: number; kind: string }
-export interface RadarFrame { time: string; path: string }
+export interface SatelliteFrames { template: string; frames: string[] }
 
 const STYLE = {
   light: "https://tiles.openfreemap.org/styles/positron",
@@ -17,17 +17,19 @@ const STYLE = {
 
 /**
  * Mapa base OpenFreeMap (datos © OpenStreetMap). Capas: alertas del SMN (polígonos oficiales),
- * radar RainViewer (visual, no comercial) y lugares guardados.
+ * satélite GOES-19 infrarrojo (NASA GIBS) animado y lugares guardados.
  */
 export function WeatherMap({
-  alerts, places, radar, radarHost, showAlerts, radarOpacity, onPick, onAlertClick,
+  alerts, places, satellite, frame, showAlerts, satOpacity, onPick, onAlertClick, zoom = 9.2,
 }: {
   alerts: FeatureCollection | null;
   places: MapPlace[];
-  radar: RadarFrame | null;
-  radarHost: string | null;
+  satellite?: SatelliteFrames | null;
+  /** Índice del cuadro visible; los demás quedan cargados con opacidad 0 para animar sin parpadeo. */
+  frame?: number;
   showAlerts: boolean;
-  radarOpacity: number;
+  satOpacity?: number;
+  zoom?: number;
   onPick?: (lat: number, lon: number) => void;
   onAlertClick?: (props: Record<string, unknown>) => void;
 }) {
@@ -49,8 +51,8 @@ export function WeatherMap({
       container: ref.current,
       style: STYLE[theme],
       center: [COVERAGE.center.lon, COVERAGE.center.lat],
-      zoom: 9.2,
-      attributionControl: { compact: true, customAttribution: "Alertas: SMN (CC BY 4.0) · Radar: RainViewer" },
+      zoom,
+      attributionControl: { compact: true, customAttribution: "Alertas: SMN (CC BY 4.0) · Satélite: NASA GIBS / NOAA GOES-19" },
     });
     m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
     m.on("load", () => setReady((r) => r + 1));
@@ -85,12 +87,22 @@ export function WeatherMap({
     }
     for (const id of ["alerts-fill", "alerts-line"]) m.setLayoutProperty(id, "visibility", showAlerts ? "visible" : "none");
 
-    if (m.getLayer("radar")) m.removeLayer("radar");
-    if (m.getSource("radar")) m.removeSource("radar");
-    if (radar && radarHost) {
-      m.addSource("radar", { type: "raster", tiles: [`${radarHost}${radar.path}/256/{z}/{x}/{y}/2/1_1.png`], tileSize: 256, maxzoom: 7, attribution: "RainViewer" });
-      m.addLayer({ id: "radar", type: "raster", source: "radar", paint: { "raster-opacity": radarOpacity } });
+    // Satélite: una capa por cuadro; se agregan las que faltan y se quitan las viejas.
+    const wanted = new Set((satellite?.frames ?? []).map((t) => `sat-${t}`));
+    for (const layer of m.getStyle().layers ?? []) {
+      if (layer.id.startsWith("sat-") && !wanted.has(layer.id)) {
+        m.removeLayer(layer.id);
+        m.removeSource(layer.id);
+      }
     }
+    satellite?.frames.forEach((t, i) => {
+      const id = `sat-${t}`;
+      if (!m.getSource(id)) {
+        m.addSource(id, { type: "raster", tiles: [satellite.template.replace("{time}", t)], tileSize: 256, maxzoom: 6 });
+        m.addLayer({ id, type: "raster", source: id, paint: { "raster-opacity": 0, "raster-opacity-transition": { duration: 0 }, "raster-fade-duration": 0 } }, m.getLayer("alerts-fill") ? "alerts-fill" : undefined);
+      }
+      m.setPaintProperty(id, "raster-opacity", i === frame ? satOpacity ?? 0.75 : 0);
+    });
 
     const pts: FeatureCollection = {
       type: "FeatureCollection",
@@ -102,7 +114,7 @@ export function WeatherMap({
       m.addLayer({ id: "places", type: "circle", source: "places", paint: { "circle-radius": 7, "circle-color": "#2f6fe0", "circle-stroke-color": "#fff", "circle-stroke-width": 2.5 } });
     }
     if (m.getLayer("places")) m.moveLayer("places");
-  }, [alerts, places, radar, radarHost, showAlerts, radarOpacity, ready]);
+  }, [alerts, places, satellite, frame, showAlerts, satOpacity, ready]);
 
-  return <div ref={ref} className="h-full w-full" role="application" aria-label="Mapa de alertas, radar y lugares" />;
+  return <div ref={ref} className="h-full w-full" role="application" aria-label="Mapa de satélite, alertas y lugares" />;
 }

@@ -14,13 +14,13 @@ São Paulo) con **Supabase / PostgreSQL + PostGIS** (sa-east-1).
 ```
 src/
   app/                 páginas (PWA) y API (route handlers)
-    (app)/             resumen, mapa, lugares, alertas, reportes, preferencias, fuentes, operaciones
-    api/               risk, official-alerts, radar, status, places, car, notices, prefs, push, reports, ops, auth/*, cron/*
+    (app)/             públicas: resumen (Ahora), radar, alertas, fuentes · con cuenta: lugares, preferencias, reportes, operaciones
+    api/               risk, official-alerts, satellite, status, places, car, notices, prefs, push, reports, ops, auth/*, cron/*
   server/
     core/              env, salida HTTP con lista blanca (SSRF), logs con redacción, rate limit, cron
     db/                clientes Supabase (usuario con RLS / servicio)
     modules/
-      sources/         conectores: SMN CAP, SMN observaciones, INA a5, Open-Meteo
+      sources/         conectores: SMN CAP, SMN observaciones, INA a5, Open-Meteo, GOES-19 (NASA GIBS)
       risk/            lluvia (ensambles), granizo (ingredientes), anegamiento (condiciones + DEM), calibración
       alerts/          motor de decisión: deduplicación, histéresis, vencimiento, modo sombra
       notify/          Web Push (VAPID)
@@ -41,7 +41,8 @@ pnpm install
 cp .env.example .env.local   # opcional: sin Supabase corre en "modo local" con datos públicos en vivo
 pnpm dev
 ```
-- **Modo local** (sin variables de Supabase): resumen, mapa, alertas y fuentes funcionan con datos reales; los lugares se guardan en el navegador.
+- **Sin cuenta**: veredicto para Córdoba, tu ubicación o cualquier punto del radar; radar satelital animado; alertas y fuentes. Todo con datos reales.
+- **Con cuenta** (requiere Supabase): lugares guardados y "Dejé el auto acá", notificaciones push, reportes comunitarios e historial.
 - **Con Supabase**: crear proyecto en sa-east-1, aplicar `supabase/migrations/*`, completar `.env.local`.
 - **Notificaciones**: `npx web-push generate-vapid-keys` y cargar las claves.
 
@@ -72,4 +73,4 @@ Resultados: [`ml/reports/evaluacion.md`](ml/reports/evaluacion.md) · Model card
 - [Runbook](docs/operacion/runbook.md) · [Lanzamiento](docs/operacion/lanzamiento.md) · [Costos](docs/costos.md)
 
 Atribuciones: Servicio Meteorológico Nacional (CC BY 4.0) · Instituto Nacional del Agua · Open-Meteo.com (CC BY 4.0) · ECMWF · NOAA ·
-RainViewer · © OpenStreetMap / OpenFreeMap.
+NASA GIBS · © OpenStreetMap / OpenFreeMap.

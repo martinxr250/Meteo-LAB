@@ -10,7 +10,7 @@ Fecha: 2026-11-03. Basado en pruebas de acceso reales (ver `docs/fuentes/matriz.
 | **Granizo** | Solo **condiciones favorables** (ingredientes: CAPE, nivel de congelación, disparo convectivo) | Datos de modelo disponibles; **sin etiquetas verificadas de granizo en superficie** | Radar polarimétrico RMA1 (convenio SINARAME) y un registro verificado de granizo (p. ej., reportes moderados + aseguradoras + SMN) |
 | **Anegamientos urbanos** | Condiciones favorables (lluvia prevista + antecedente + indicador topográfico DEM 90 m) | DEM Copernicus vía Open-Meteo | Puntos críticos y red de drenaje municipales; registro histórico de anegamientos |
 | **Crecidas fluviales / repentinas** | **No se estiman** | INA a5 no tiene pronóstico para arroyos de la Capital | Pronóstico hidrológico del INA o de la APRHI; niveles en tiempo real del Suquía y La Cañada |
-| **Nowcasting 0–60 min** | No (solo capa visual de radar) | RainViewer sin procedencia documentada para Argentina | Volúmenes RMA1 en tiempo real |
+| **Nowcasting 0–60 min** | No. Se muestra satélite GOES-19 infrarrojo (topes de tormenta) cada 10 min | No hay radar público para Córdoba; RainViewer no la cubre | Volúmenes RMA1 en tiempo real (convenio) |
 
 ## Producto útil mientras tanto
 1. Avisos oficiales del SMN geolocalizados para casa, trabajo y **auto** (con vigilancia temporal), con notificaciones push.
@@ -23,6 +23,6 @@ Fecha: 2026-11-03. Basado en pruebas de acceso reales (ver `docs/fuentes/matriz.
 | Radar RMA1 (SINARAME) | Convenio de datos con SMN / Subsecretaría de Recursos Hídricos | Dirección del proyecto |
 | Red provincial (OHMC, SIHM-APRHI) | Convenio de datos; los portales no respondieron en la prueba | Dirección del proyecto |
 | Pluviómetros y puntos críticos municipales | Pedido a Defensa Civil de la Municipalidad de Córdoba | Dirección del proyecto |
-| Uso comercial de Open-Meteo y RainViewer | Plan pago o acuerdo si el producto se comercializa | Dirección del proyecto |
+| Uso comercial de Open-Meteo | Plan pago o acuerdo si el producto se comercializa | Dirección del proyecto |
 | Revisión meteorológica e hidrológica | Profesional matriculado/a revisa umbrales, textos y resultados antes de activar avisos propios | Dirección del proyecto |
 | NASA Earthdata (GPM IMERG) | Crear credenciales gratuitas | Equipo técnico |

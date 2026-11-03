@@ -86,3 +86,16 @@ describe("Open-Meteo", () => {
     expect(f.time.length).toBe(f.precipitation.length);
   });
 });
+
+import { parseDomainTimes } from "@/server/modules/sources/goes";
+
+describe("GOES / NASA GIBS", () => {
+  it("expande los tramos de horas disponibles y se queda con los últimos", () => {
+    const xml = "<Domains><DimensionDomain><Domain>2026-11-02T22:00:00Z/2026-11-03T02:30:00Z/PT10M</Domain></DimensionDomain></Domains>";
+    const t = parseDomainTimes(xml, 3);
+    expect(t).toEqual(["2026-11-03T02:10:00Z", "2026-11-03T02:20:00Z", "2026-11-03T02:30:00Z"]);
+  });
+  it("sin dominio no inventa horas", () => {
+    expect(parseDomainTimes("<Domains/>")).toEqual([]);
+  });
+});

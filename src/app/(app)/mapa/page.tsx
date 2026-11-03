@@ -1,8 +1,5 @@
-import type { Metadata } from "next";
-import { MapView } from "./map-view";
-
-export const metadata: Metadata = { title: "Mapa" };
+import { redirect } from "next/navigation";
 
 export default function Page() {
-  return <MapView />;
+  redirect("/radar");
 }

@@ -1,8 +1,9 @@
-import type { HourCondition, HourlyPoint } from "@/lib/domain";
+import type { HourCondition, HourlyPoint, ModelRun } from "@/lib/domain";
 
 /*
  * Open-Meteo: agregador de modelos numéricos (no es una fuente independiente de los modelos que sirve).
- * - /v1/forecast con models=best_match combina modelos según la región.
+ * - /v1/forecast con models=gfs_seamless (en Argentina, GFS 0.25°): fue el mejor baseline en la evaluación local
+ *   y permite informar la hora exacta de la corrida (metadatos del modelo ncep_gfs025).
  * - /v1/ensemble: miembros de ECMWF IFS ENS 0.25° (51) y NCEP GEFS 0.25° (31).
  * Licencia de los datos: CC BY 4.0. La API gratuita es solo para uso no comercial;
  * el uso comercial requiere plan pago (ver docs/fuentes/matriz.md).
@@ -19,7 +20,7 @@ export function forecastUrl(lat: number, lon: number) {
     timezone: "UTC",
     past_days: "3",
     forecast_days: "2",
-    models: "best_match",
+    models: "gfs_seamless",
   });
   return `https://api.open-meteo.com/v1/forecast?${q}`;
 }
@@ -143,4 +144,26 @@ export function hourCondition(code: number | null, mm: number | null, cape: numb
   // Llovizna (51–57) por debajo de 0,5 mm no cuenta: no cambia ninguna decisión.
   if (rain >= 0.5 || (code != null && ((code >= 61 && code <= 67) || (code >= 80 && code <= 82)))) return "lluvia";
   return "seco";
+}
+
+/** Metadatos públicos de cada modelo en Open-Meteo: hora de inicio de la última corrida y de su disponibilidad. */
+export const MODEL_META = {
+  gfs: { id: "ncep_gfs025", label: "GFS" },
+  ecmwfEns: { id: "ecmwf_ifs025_ensemble", label: "ECMWF ENS" },
+  gefs: { id: "ncep_gefs025", label: "GEFS" },
+} as const;
+
+export function modelMetaUrl(id: string) {
+  return `https://api.open-meteo.com/data/${id}/static/meta.json`;
+}
+
+
+export function parseModelMeta(label: string) {
+  return (body: string): ModelRun => {
+    const d = JSON.parse(body);
+    const init = Number(d?.last_run_initialisation_time);
+    const available = Number(d?.last_run_availability_time);
+    if (!Number.isFinite(init) || !Number.isFinite(available)) throw new Error("Metadatos de modelo inválidos");
+    return { label, init: new Date(init * 1000).toISOString(), available: new Date(available * 1000).toISOString() };
+  };
 }

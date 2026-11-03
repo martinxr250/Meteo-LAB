@@ -14,7 +14,7 @@ export const ALLOWED_HOSTS = new Set([
   "previous-runs-api.open-meteo.com",
   "archive-api.open-meteo.com",
   "alerta.ina.gob.ar",
-  "api.rainviewer.com",
+  "gibs.earthdata.nasa.gov",
   "noaa-goes19.s3.amazonaws.com",
 ]);
 

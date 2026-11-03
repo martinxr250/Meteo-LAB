@@ -78,7 +78,10 @@ function Answer({ risk, placeId, label, watchUntil }: { risk: PointRisk; placeId
         <p className="text-sm text-muted-foreground">{label}{watchUntil ? ` · vigilancia ${until(watchUntil)}` : ""}</p>
         <p className={cn("display-title mt-2 text-5xl sm:text-6xl", LEVEL_TEXT[v.level])}>{v.word}</p>
         {when && v.level !== "bajo" && <p className="mt-3 text-xl">{when}</p>}
-        <p className="mt-2 text-sm text-muted-foreground">{v.line}</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {v.line}
+          {v.issuedAt && <> · {v.basis === "oficial" ? "emitido" : "corrida"} {fmtDateTime(v.issuedAt)}</>}
+        </p>
         {change && <p className="mt-1 text-sm font-medium">{change}</p>}
 
         {v.facts.length > 0 && (
@@ -96,7 +99,10 @@ function Answer({ risk, placeId, label, watchUntil }: { risk: PointRisk; placeId
       <Glass className="grid gap-4 p-5">
         <div className="flex items-baseline justify-between">
           <h2 className="text-sm font-semibold">Hora por hora</h2>
-          {risk.hourly.some((h) => h.inAlert) && <span className="text-xs text-muted-foreground">Sombreado: horas con aviso del SMN</span>}
+          <span className="text-xs text-muted-foreground">
+            {risk.runs.forecast ? `GFS · corrida ${fmtDateTime(risk.runs.forecast.init)}` : "Pronóstico no disponible"}
+            {risk.hourly.some((h) => h.inAlert) ? " · sombreado: aviso del SMN" : ""}
+          </span>
         </div>
         <HourTimeline data={risk.hourly} />
         <HourStrip data={risk.hourly} />
@@ -117,7 +123,9 @@ function useChange(placeId: string, level: Level) {
       prev = JSON.parse(localStorage.getItem(k) ?? "null");
       if (!prev || Date.now() - new Date(prev.at).getTime() > 20 * 60_000) localStorage.setItem(k, JSON.stringify({ level, at: new Date().toISOString() }));
     } catch {}
-    const text = prev && prev.level !== level ? `${LEVEL_ORDER[level] > LEVEL_ORDER[prev.level] ? "Subió" : "Bajó"} desde tu última consulta (${ago(prev.at)})` : null;
+    // "Sin datos" no es un nivel: no se compara contra él.
+    const comparable = prev && prev.level !== "sin_datos" && level !== "sin_datos";
+    const text = comparable && prev && prev.level !== level ? `${LEVEL_ORDER[level] > LEVEL_ORDER[prev.level] ? "Subió" : "Bajó"} desde tu última consulta (${ago(prev.at)})` : null;
     // Lectura de almacenamiento externo: se sincroniza una vez por lugar y nivel.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMsg(text);
@@ -148,6 +156,7 @@ function Details({ risk }: { risk: PointRisk }) {
                     <span className="font-medium">{a.color ? `Alerta ${a.color}` : "Aviso"} · {a.event}</span>
                     <span className="text-muted-foreground">{whenRange(a.onset ?? a.sent, a.expires)}</span>
                   </p>
+                  <p className="text-xs text-muted-foreground">Emitido {fmtDateTime(a.sent)}</p>
                   <p className="mt-1 text-muted-foreground">{a.description}</p>
                   {a.instruction && (
                     <details className="mt-2">
@@ -164,6 +173,9 @@ function Details({ risk }: { risk: PointRisk }) {
 
           <section className="p-5">
             <h3 className="font-semibold">Estimación propia · 24 h</h3>
+            <p className="text-xs text-muted-foreground">
+              Ensambles: {risk.runs.ensembles.map((r) => `${r.label} ${fmtDateTime(r.init)}`).join(" · ") || "no disponibles"}
+            </p>
             <table className="mt-2 w-full text-left">
               <tbody className="divide-y divide-border">
                 {risk.assessments.map((a) => (
@@ -180,9 +192,17 @@ function Details({ risk }: { risk: PointRisk }) {
             </p>
           </section>
 
-          <section className="p-5 text-xs text-muted-foreground">
-            Actualizado {fmtDateTime(risk.generatedAt)}.{" "}
-            {degraded.length ? `Sin datos al día de: ${degraded.map((d) => d.name).join(", ")}.` : "Todas las fuentes al día."}
+          <section className="p-5">
+            <h3 className="font-semibold">Fuentes</h3>
+            <ul className="mt-2 grid gap-1 text-xs">
+              {risk.sources.map((s) => (
+                <li key={s.id} className="flex justify-between gap-3">
+                  <span className={cn(!s.ok && "text-lvl-high")}>{s.name}</span>
+                  <span className="text-muted-foreground">{!s.ok ? s.error ?? "Sin respuesta" : s.dataTime ? fmtDateTime(s.dataTime) : "—"}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-2 text-xs text-muted-foreground">Consultado {fmtDateTime(risk.generatedAt)}{degraded.length ? " · hay fuentes con problemas" : ""}.</p>
           </section>
         </Glass>
       )}

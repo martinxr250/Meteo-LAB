@@ -10,10 +10,10 @@ export async function proxy(request: NextRequest) {
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob: https://tiles.openfreemap.org https://tilecache.rainviewer.com",
+    "img-src 'self' data: blob: https://tiles.openfreemap.org https://gibs.earthdata.nasa.gov",
     "font-src 'self'",
     // Patrón BFF: el navegador nunca habla con Supabase directamente; las cookies de sesión son httpOnly.
-    `connect-src 'self' https://tiles.openfreemap.org https://tilecache.rainviewer.com${isDev ? " ws:" : ""}`,
+    `connect-src 'self' https://tiles.openfreemap.org https://gibs.earthdata.nasa.gov${isDev ? " ws:" : ""}`,
     "worker-src 'self' blob:",
     "manifest-src 'self'",
     "object-src 'none'",

@@ -1,6 +1,6 @@
 "use client";
 
-import { Activity, Bell, Database, Gauge, LogIn, LogOut, Map as MapIcon, MapPin, MessageSquareWarning, Moon, PanelLeftClose, PanelLeftOpen, Settings, Sun } from "lucide-react";
+import { Activity, Bell, Database, Gauge, Lock, LogIn, LogOut, Map as MapIcon, MapPin, MessageSquareWarning, Moon, PanelLeftClose, PanelLeftOpen, Settings, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -12,14 +12,17 @@ import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { DataStatus } from "./data-status";
 
-const NAV = [
-  { href: "/resumen", label: "Resumen", icon: Gauge },
-  { href: "/mapa", label: "Mapa", icon: MapIcon },
-  { href: "/lugares", label: "Lugares", icon: MapPin },
+// Sin cuenta: consultar. Con cuenta: lo personal (lugares, avisos al celular, reportes).
+const PUBLIC_NAV = [
+  { href: "/resumen", label: "Ahora", icon: Gauge },
+  { href: "/radar", label: "Radar", icon: MapIcon },
   { href: "/alertas", label: "Alertas", icon: Bell },
-  { href: "/reportes", label: "Reportes", icon: MessageSquareWarning },
   { href: "/fuentes", label: "Fuentes", icon: Database },
-  { href: "/preferencias", label: "Preferencias", icon: Settings },
+];
+const ACCOUNT_NAV = [
+  { href: "/lugares", label: "Mis lugares", icon: MapPin },
+  { href: "/preferencias", label: "Notificaciones", icon: Settings },
+  { href: "/reportes", label: "Reportes", icon: MessageSquareWarning },
 ];
 
 // Preferencia de riel compacto (solo escritorio), igual que en Tableros.
@@ -78,9 +81,15 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Logo />
             {!mini && <Wordmark />}
           </Link>
-          <nav className="grid gap-1 px-3">
-            {NAV.map((n) => (
+          <nav className="grid gap-1 px-3" aria-label="Consultar">
+            {PUBLIC_NAV.map((n) => (
               <NavLink key={n.href} {...n} active={pathname.startsWith(n.href)} mini={mini} />
+            ))}
+          </nav>
+          <nav className="mt-6 grid gap-1 px-3" aria-label="Tu cuenta">
+            {!mini && <p className="px-3 pb-1 text-xs text-muted-foreground">Tu cuenta</p>}
+            {ACCOUNT_NAV.map((n) => (
+              <NavLink key={n.href} {...n} active={pathname.startsWith(n.href)} mini={mini} locked={!session.user} />
             ))}
             {session.user && session.mfa && <NavLink href="/operaciones" label="Operaciones" icon={Activity} active={pathname.startsWith("/operaciones")} mini={mini} />}
           </nav>
@@ -123,7 +132,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       {/* Navegación inferior en móvil */}
       <nav className="glass-strong fixed inset-x-3 bottom-3 z-30 grid grid-cols-5 rounded-3xl p-1.5 md:hidden" aria-label="Navegación principal">
-        {NAV.slice(0, 4).concat(NAV[6]).map((n) => {
+        {[...PUBLIC_NAV.slice(0, 3), ACCOUNT_NAV[0], ACCOUNT_NAV[1]].map((n) => {
           const active = pathname.startsWith(n.href);
           return (
             <Link key={n.href} href={n.href} aria-current={active ? "page" : undefined} className={cn("flex flex-col items-center gap-0.5 rounded-2xl py-2 text-[10px] font-medium text-muted-foreground", active && "bg-primary text-primary-foreground")}>
@@ -137,7 +146,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   );
 }
 
-function NavLink({ href, icon: Icon, label, active, mini }: { href: string; icon: typeof Gauge; label: string; active: boolean; mini: boolean }) {
+function NavLink({ href, icon: Icon, label, active, mini, locked }: { href: string; icon: typeof Gauge; label: string; active: boolean; mini: boolean; locked?: boolean }) {
   return (
     <Link
       href={href}
@@ -151,7 +160,8 @@ function NavLink({ href, icon: Icon, label, active, mini }: { href: string; icon
       )}
     >
       <Icon className="size-[1.1rem] shrink-0" aria-hidden />
-      {!mini && <span>{label}</span>}
+      {!mini && <span className="flex-1">{label}</span>}
+      {!mini && locked && <Lock className="size-3.5 opacity-60" aria-label="Requiere cuenta" />}
     </Link>
   );
 }

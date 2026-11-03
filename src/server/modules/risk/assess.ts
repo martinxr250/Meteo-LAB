@@ -6,7 +6,7 @@ import { fetchSource } from "@/server/core/http";
 import { log } from "@/server/core/log";
 import { fetchOfficialAlerts } from "../sources/official";
 import {
-  elevationUrl, ensembleUrl, forecastUrl, parseElevation, parseEnsemble, parseForecast, toHourly,
+  elevationUrl, ensembleUrl, forecastUrl, MODEL_META, modelMetaUrl, parseElevation, parseEnsemble, parseForecast, parseModelMeta, toHourly,
   type EnsembleSeries, type ForecastSeries,
 } from "../sources/open-meteo";
 import { assessFlood } from "./flood";
@@ -97,19 +97,26 @@ export async function assessPoint(
     // El indicador topográfico usa el punto redondeado a ~110 m: el DEM tiene 90 m.
     tryFetch<number[]>(elevationUrl(Number(lat.toFixed(3)), Number(lon.toFixed(3))), parseElevation, 60 * 60 * 24 * 30),
   ]);
+  const [gfsRun, ecmwfEnsRun, gefsRun] = await Promise.all(
+    [MODEL_META.gfs, MODEL_META.ecmwfEns, MODEL_META.gefs].map((m) => tryFetch(modelMetaUrl(m.id), parseModelMeta(m.label), 300)),
+  );
+  const fcRun = fc.value ? gfsRun.value : null;
+  const ensRuns = ens.value ? [ecmwfEnsRun.value, gefsRun.value].filter((r): r is NonNullable<typeof r> => !!r) : [];
+  // Momento del ensamble: la corrida más vieja de las dos (el dato más desactualizado manda).
+  const ensInit = ensRuns.map((r) => r.init).sort()[0] ?? null;
 
   const matched = matchAlerts(official.alerts, lat, lon);
   const assessments: PhenomenonAssessment[] = [
-    assessHail(fc.value, ens.value, matched.filter((m) => m.relation === "dentro"), now, fc.fetchedAt),
-    assessRain(ens.value, fc.value, now, ens.fetchedAt),
-    assessFlood(fc.value, ens.value, elev.value, now, ens.fetchedAt),
+    assessHail(fc.value, ens.value, matched.filter((m) => m.relation === "dentro"), now, fcRun?.init ?? null),
+    assessRain(ens.value, fc.value, now, ensInit),
+    assessFlood(fc.value, ens.value, elev.value, now, ensInit),
   ];
 
-  const lastFcTime = fc.value ? fc.fetchedAt : null;
   const sources: SourceStatus[] = [
     official.status,
-    status("open-meteo-fc", "Pronóstico determinista (Open-Meteo)", !!fc.value, fc.fetchedAt, lastFcTime, 6, now, fc.error),
-    status("open-meteo-ens", "Ensambles ECMWF/GEFS (Open-Meteo)", !!ens.value, ens.fetchedAt, ens.fetchedAt, 12, now, ens.error),
+    // La antigüedad se mide desde el inicio de la corrida: GFS corre cada 6 h y tarda ~4 h en publicarse.
+    status("open-meteo-fc", "Pronóstico GFS", !!fc.value, fc.fetchedAt, fcRun?.init ?? null, 12, now, fc.error),
+    status("open-meteo-ens", "Ensambles ECMWF y GEFS", !!ens.value, ens.fetchedAt, ensInit, 18, now, ens.error),
     status("dem", "Elevación Copernicus 90 m", !!elev.value, elev.fetchedAt, elev.fetchedAt, 24 * 365, now, elev.error),
   ];
   const degraded = sources.filter((s) => !s.ok || s.stale).map((s) => `${s.name}: ${s.error ?? "datos desactualizados"}`);
@@ -124,7 +131,8 @@ export async function assessPoint(
   });
   return {
     point: { lat: cell.lat, lon: cell.lon, snappedTo: cell.step },
-    verdict: buildVerdict(inside, assessments, hourly),
+    verdict: buildVerdict(inside, assessments, hourly, fcRun, official.complete),
+    runs: { forecast: fcRun, ensembles: ensRuns },
     generatedAt: now.toISOString(),
     official: matched,
     matched,

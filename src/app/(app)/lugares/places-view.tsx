@@ -21,7 +21,7 @@ function getPosition(): Promise<GeolocationPosition> {
 }
 
 export function PlacesView() {
-  const { places, add, remove, parkCar, remote } = usePlaces();
+  const { places, add, remove, parkCar } = usePlaces();
   const [draft, setDraft] = useState<{ lat: number; lon: number } | null>(null);
   const [kind, setKind] = useState<Exclude<PlaceKind, "auto">>("casa");
   const [label, setLabel] = useState("");
@@ -62,7 +62,6 @@ export function PlacesView() {
     <div className="mx-auto grid max-w-6xl gap-6 pt-2">
       <div>
         <h1 className="display-title text-4xl">Lugares</h1>
-        {!remote && <p className="mt-1 text-sm text-muted-foreground">Se guardan solo en este navegador.</p>}
       </div>
 
       <Glass strong id="auto" className="grid gap-4 p-5 sm:grid-cols-[1fr_auto] sm:items-center">
@@ -129,10 +128,7 @@ export function PlacesView() {
           <WeatherMap
             alerts={null}
             places={[...places, ...(draft ? [{ id: "draft", label: "Nuevo", lat: draft.lat, lon: draft.lon, kind: "otro" as const, watchUntil: null, createdAt: "" }] : [])]}
-            radar={null}
-            radarHost={null}
             showAlerts={false}
-            radarOpacity={0}
             onPick={(lat, lon) => setDraft({ lat, lon })}
           />
         </div>

@@ -18,51 +18,94 @@ async function pool<T, R>(items: T[], size: number, fn: (t: T) => Promise<R>) {
   return out;
 }
 
-/**
- * Descarga el índice CAP del SMN y cada documento. Las actualizaciones (msgType Update/Cancel)
- * reemplazan al mensaje que referencian: así no se muestran dos versiones del mismo aviso.
+/*
+ * Cada documento CAP del SMN tiene una URL única por emisión y no cambia: se guarda en memoria
+ * y no se vuelve a pedir. Así la carga sobre el SMN es solo el índice + los documentos nuevos.
+ * Si el SMN responde 429 (límite de pedidos), se deja de pedir hasta que pase la pausa.
  */
-export async function fetchOfficialAlerts(now = new Date()): Promise<{ alerts: OfficialAlert[]; status: SourceStatus; rawShas: string[] }> {
+const DOC_CACHE = new Map<string, { alert: OfficialAlert | null; sha: string }>();
+const DOC_CACHE_MAX = 2_000;
+let backoffUntil = 0;
+let lastGood: { at: number; alerts: OfficialAlert[]; rawShas: string[] } | null = null;
+
+export interface OfficialResult {
+  alerts: OfficialAlert[];
+  status: SourceStatus;
+  rawShas: string[];
+  /** true solo si se leyeron TODOS los documentos vigentes: si falta alguno, no se puede afirmar que no hay aviso. */
+  complete: boolean;
+}
+
+/**
+ * Descarga el índice CAP del SMN y los documentos que todavía no tenemos. Las actualizaciones
+ * (msgType Update/Cancel) reemplazan al mensaje que referencian.
+ */
+export async function fetchOfficialAlerts(now = new Date()): Promise<OfficialResult> {
   const started = new Date();
+  const fail = (error: string): OfficialResult => {
+    // Ante una caída se ofrece la última lectura buena de menos de 1 h, marcada como incompleta.
+    const recent = lastGood && now.getTime() - lastGood.at < 3_600_000 ? lastGood : null;
+    return {
+      alerts: recent ? recent.alerts.filter((a) => isActive(a, now)) : [],
+      rawShas: recent?.rawShas ?? [],
+      complete: false,
+      status: { id: "smn-cap", name: "SMN — alertas y avisos", ok: false, fetchedAt: started.toISOString(), dataTime: null, ageMinutes: null, stale: true, error },
+    };
+  };
+  if (Date.now() < backoffUntil) return fail("El SMN pidió esperar antes de volver a consultar");
   try {
     const index = await fetchSource(SMN_CAP_INDEX, { revalidate: 120, maxBytes: 2_000_000 });
     const links = parseCapIndex(index.body).slice(0, 400);
     let failed = 0;
-    const docs = await pool(links, 12, async (url) => {
-      try {
-        const r = await fetchSource(url, { revalidate: 600, maxBytes: 500_000, timeoutMs: 8_000 });
-        return { alert: parseCapAlert(r.body, url), sha: r.sha256 };
-      } catch {
+    let limited = false;
+    const docs = await pool(links, 3, async (url) => {
+      const cached = DOC_CACHE.get(url);
+      if (cached) return cached;
+      if (limited) {
         failed++;
+        return null;
+      }
+      try {
+        const r = await fetchSource(url, { revalidate: false, maxBytes: 500_000, timeoutMs: 8_000 });
+        const entry = { alert: parseCapAlert(r.body, url), sha: r.sha256 };
+        if (DOC_CACHE.size >= DOC_CACHE_MAX) DOC_CACHE.delete(DOC_CACHE.keys().next().value!);
+        DOC_CACHE.set(url, entry);
+        return entry;
+      } catch (e) {
+        failed++;
+        if ((e as { status?: number }).status === 429) {
+          limited = true;
+          backoffUntil = Date.now() + 5 * 60_000;
+        }
         return null;
       }
     });
     const parsed = docs.filter((d): d is { alert: OfficialAlert; sha: string } => !!d?.alert);
     const alerts = supersede(parsed.map((d) => d.alert)).filter((a) => isActive(a, now));
     const newest = parsed.map((d) => d.alert.sent).sort().at(-1) ?? null;
-    if (failed) log("warn", "smn_cap.partial", { failed, total: links.length });
+    const rawShas = [index.sha256, ...parsed.map((d) => d.sha)];
+    if (failed) log("warn", "smn_cap.partial", { failed, total: links.length, limited });
+    else lastGood = { at: now.getTime(), alerts, rawShas };
     return {
       alerts,
-      rawShas: [index.sha256, ...parsed.map((d) => d.sha)],
+      rawShas,
+      complete: failed === 0,
       status: {
         id: "smn-cap",
         name: "SMN — alertas y avisos",
-        ok: failed < links.length / 2,
+        ok: failed === 0,
         fetchedAt: index.fetchedAt,
         dataTime: newest,
         ageMinutes: newest ? Math.round((now.getTime() - new Date(newest).getTime()) / 60_000) : null,
         // Las alertas se emiten dos veces por día: más de 14 h sin emisiones indica un problema del feed.
         stale: newest ? now.getTime() - new Date(newest).getTime() > 14 * 3_600_000 : true,
-        error: failed ? `${failed} de ${links.length} documentos no se pudieron leer` : undefined,
+        error: limited ? "El SMN limitó los pedidos; reintentamos en 5 min" : failed ? `${failed} de ${links.length} avisos no se pudieron leer` : undefined,
       },
     };
   } catch (e) {
     log("error", "smn_cap.failed", { error: String(e) });
-    return {
-      alerts: [],
-      rawShas: [],
-      status: { id: "smn-cap", name: "SMN — alertas y avisos", ok: false, fetchedAt: started.toISOString(), dataTime: null, ageMinutes: null, stale: true, error: "No se pudo leer el feed oficial" },
-    };
+    if ((e as { status?: number }).status === 429) backoffUntil = Date.now() + 5 * 60_000;
+    return fail("No se pudo leer el feed oficial");
   }
 }
 

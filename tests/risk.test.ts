@@ -111,3 +111,42 @@ describe("calibración", () => {
     expect(applyCalibration(m, { x: 2 })).toBeNull();
   });
 });
+
+import { buildVerdict, factsFromOfficial } from "@/server/modules/risk/verdict";
+import type { OfficialAlert, PhenomenonAssessment } from "@/lib/domain";
+
+describe("veredicto", () => {
+  const calm: PhenomenonAssessment = {
+    phenomenon: "lluvia_intensa", kind: "estimacion", level: "bajo", probability: 0, metric: "m", window: null,
+    indicator: "", summary: "", method: "", uncertainty: "", inputs: [], modelVersion: "v",
+  };
+  const alert = {
+    id: "a", source: "SMN", product: "alerta", msgType: "Alert", references: [], event: "Tormentas", headline: "Tormentas",
+    description: "tormentas fuertes con granizo y ráfagas que podrían superar los 90 km/h. Se esperan valores entre 40 y 80 mm",
+    instruction: "", color: "naranja", colorFrom: "severidad_cap", severity: "Severe", certainty: "Likely", urgency: "Future",
+    sent: "2026-11-03T00:03:00Z", onset: "2026-11-03T18:00:00Z", expires: "2026-11-04T00:00:00Z", areaDesc: "", polygons: [], web: "", phenomena: ["tormenta", "granizo"],
+  } as OfficialAlert;
+
+  it("con aviso oficial: palabra según el color, datos citados y hora de emisión", () => {
+    const v = buildVerdict([alert], [calm], []);
+    expect(v.word).toBe("Fuerte");
+    expect(v.issuedAt).toBe(alert.sent);
+    expect(factsFromOfficial(alert)).toEqual([
+      { label: "Lluvia", value: "40–80 mm" }, { label: "Granizo", value: "Posible" }, { label: "Ráfagas", value: "> 90 km/h" },
+    ]);
+  });
+
+  it("si no se pudieron leer todos los avisos del SMN, nunca dice 'sin tormentas fuertes'", () => {
+    const v = buildVerdict([], [calm], [], null, false);
+    expect(v.word).toBe("Sin confirmar");
+    expect(v.level).toBe("sin_datos");
+  });
+
+  it("con lectura completa y pronóstico calmo, sí puede decirlo", () => {
+    expect(buildVerdict([], [calm], [], null, true).word).toBe("Sin tormentas fuertes");
+  });
+
+  it("las reglas propias no llegan a 'muy fuerte'", () => {
+    expect(buildVerdict([], [{ ...calm, level: "muy_alto" }], []).word).toBe("Fuerte");
+  });
+});
