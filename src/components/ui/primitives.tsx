@@ -31,7 +31,7 @@ export function Button({ className, variant, size, ...props }: ComponentProps<"b
 }
 
 export function Glass({ className, strong, ...props }: ComponentProps<"div"> & { strong?: boolean }) {
-  return <div className={cn(strong ? "glass-strong" : "glass", "glass-sheen rounded-2xl", className)} {...props} />;
+  return <div className={cn(strong ? "glass-strong" : "glass", "rounded-2xl", className)} {...props} />;
 }
 
 export function Pill({ className, ...props }: ComponentProps<"span">) {
@@ -42,13 +42,11 @@ export function Skeleton({ className, ...props }: ComponentProps<"div">) {
   return <div data-slot="skeleton" className={cn("rounded-xl bg-muted", className)} {...props} />;
 }
 
-export function SectionTitle({ eyebrow, title, action, className }: { eyebrow?: string; title: string; action?: React.ReactNode; className?: string }) {
+export function SectionTitle({ title, meta, action, className }: { title: string; meta?: string; action?: React.ReactNode; className?: string }) {
   return (
-    <div className={cn("flex items-end justify-between gap-3", className)}>
-      <div>
-        {eyebrow && <p className="text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">{eyebrow}</p>}
-        <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
-      </div>
+    <div className={cn("flex items-baseline justify-between gap-3", className)}>
+      <h2 className="text-sm font-semibold">{title}</h2>
+      {meta && <span className="text-xs text-muted-foreground">{meta}</span>}
       {action}
     </div>
   );

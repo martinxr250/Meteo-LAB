@@ -1,4 +1,4 @@
-import type { HourlyPoint } from "@/lib/domain";
+import type { HourCondition, HourlyPoint } from "@/lib/domain";
 
 /*
  * Open-Meteo: agregador de modelos numéricos (no es una fuente independiente de los modelos que sirve).
@@ -122,7 +122,25 @@ export function toHourly(f: ForecastSeries, ens: EnsembleSeries | null, from: Da
       cape: f.cape[i] ?? null,
       freezingLevel: f.freezing_level_height[i] ?? null,
       ensembleP10mm1h: p10,
+      weatherCode: f.weather_code[i] ?? null,
+      condition: hourCondition(f.weather_code[i] ?? null, f.precipitation[i] ?? null, f.cape[i] ?? null),
+      inAlert: false,
     });
   }
   return out;
+}
+
+/*
+ * Condición de una hora a partir del código WMO del modelo, la lluvia y la inestabilidad.
+ * 95 = tormenta; 96/99 = tormenta con granizo (diagnóstico del modelo, de baja precisión).
+ * Una tormenta con CAPE ≥ 1500 J/kg también se marca como granizo POSIBLE.
+ */
+export function hourCondition(code: number | null, mm: number | null, cape: number | null): HourCondition {
+  const rain = mm ?? 0;
+  if (code === 96 || code === 99) return "granizo";
+  if (code === 95) return (cape ?? 0) >= 1500 ? "granizo" : "tormenta";
+  if (rain >= 10 || code === 65 || code === 82) return "lluvia_fuerte";
+  // Llovizna (51–57) por debajo de 0,5 mm no cuenta: no cambia ninguna decisión.
+  if (rain >= 0.5 || (code != null && ((code >= 61 && code <= 67) || (code >= 80 && code <= 82)))) return "lluvia";
+  return "seco";
 }

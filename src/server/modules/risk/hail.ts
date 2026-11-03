@@ -64,6 +64,7 @@ export function assessHail(fc: ForecastSeries | null, ens: EnsembleSeries | null
       ...base,
       level: "sin_datos",
       window: null,
+      indicator: "Sin datos de inestabilidad",
       summary: officialHail
         ? "No pudimos calcular las condiciones propias, pero hay un aviso oficial que menciona granizo en esta zona."
         : "No pudimos obtener los datos de inestabilidad. No es posible estimar condiciones de granizo.",
@@ -77,6 +78,7 @@ export function assessHail(fc: ForecastSeries | null, ens: EnsembleSeries | null
     ...base,
     level,
     window: ing.window,
+    indicator: `Índice ${ing.score}/5 · CAPE ${Math.round(ing.capeMax)} J/kg${ing.fzMin != null ? ` · 0 °C a ${Math.round(ing.fzMin)} m` : ""}`,
     summary:
       level === "bajo"
         ? `Condiciones poco favorables para granizo en las próximas 24 h${ing.why.length ? ` (${ing.why.join("; ")})` : ""}.`

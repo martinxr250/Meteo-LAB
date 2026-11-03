@@ -48,7 +48,7 @@ export function MapView() {
       <Glass strong className="absolute top-3 left-3 z-10 w-[min(20rem,calc(100%-4.5rem))] p-4 text-sm">
         <p className="flex items-center gap-2 font-semibold"><Layers className="size-4" /> Capas</p>
         <label className="mt-3 flex items-center justify-between gap-2">
-          <span>Alertas oficiales (SMN)</span>
+          <span>Alertas SMN</span>
           <input type="checkbox" checked={showAlerts} onChange={(e) => setShowAlerts(e.target.checked)} className="size-4 accent-[var(--primary)]" />
         </label>
         <div className="mt-1 flex gap-1 text-xs">
@@ -57,7 +57,7 @@ export function MapView() {
           ))}
         </div>
         <p className="mt-1 text-[11px] text-muted-foreground">
-          {alerts.isLoading ? "Cargando…" : alerts.isError ? "No se pudo leer el feed del SMN." : `${alerts.data?.features.length ?? 0} polígonos vigentes · leído ${ago(alerts.data?.status.fetchedAt)}`}
+          {alerts.isLoading ? "Cargando…" : alerts.isError ? "SMN sin respuesta" : `${alerts.data?.features.length ?? 0} zonas · ${ago(alerts.data?.status.fetchedAt)}`}
         </p>
         <div className="mt-2 flex flex-wrap gap-1.5 text-[11px]">
           <span className="inline-flex items-center gap-1"><i className="size-2.5 rounded-sm bg-smn-amarilla" /> Amarilla</span>
@@ -67,19 +67,18 @@ export function MapView() {
 
         <hr className="my-3 border-border" />
         <label className="flex items-center justify-between gap-2">
-          <span className="flex items-center gap-1.5"><Radar className="size-4" /> Radar (RainViewer)</span>
+          <span className="flex items-center gap-1.5"><Radar className="size-4" /> Radar</span>
           <input type="checkbox" checked={showRadar} onChange={(e) => setShowRadar(e.target.checked)} className="size-4 accent-[var(--primary)]" />
         </label>
         {radar.isError && <p className="mt-1 text-[11px] text-muted-foreground">Radar no disponible.</p>}
         {frames.length > 0 && showRadar && (
           <>
             <input type="range" min={0} max={frames.length - 1} value={idx} onChange={(e) => setFrameIdx(Number(e.target.value))} className="mt-2 w-full accent-[var(--primary)]" aria-label="Hora del cuadro de radar" />
-            <p className="text-[11px] text-muted-foreground">Cuadro de las {fmtTime(frames[idx]?.time)} ({ago(frames[idx]?.time)})</p>
+            <p className="text-[11px] text-muted-foreground">{fmtTime(frames[idx]?.time)} · RainViewer</p>
             <label className="mt-2 grid gap-1 text-[11px] text-muted-foreground">
               Opacidad
               <input type="range" min={0.2} max={1} step={0.1} value={opacity} onChange={(e) => setOpacity(Number(e.target.value))} className="accent-[var(--primary)]" />
             </label>
-            <p className="mt-1 text-[11px] text-muted-foreground">Capa visual de un agregador: la cobertura en Argentina puede ser parcial y no reemplaza al radar oficial del SMN.</p>
           </>
         )}
       </Glass>

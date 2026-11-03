@@ -63,6 +63,11 @@ export function assessFlood(fc: ForecastSeries | null, ens: EnsembleSeries | nul
     probability: null,
     metric: "Condiciones favorables (no es probabilidad de anegamiento)",
     window: { from: now.toISOString(), to: new Date(now.getTime() + 24 * 3_600_000).toISOString() },
+    indicator: [
+      antecedent != null ? `72 h previas: ${antecedent.toFixed(0)} mm` : null,
+      p3h30 != null ? `≥30 mm/3 h ${Math.round(p3h30 * 100)} %` : null,
+      topo ? (topo.low ? `bajo topográfico (${topo.tpi.toFixed(0)} m)` : "sin bajo topográfico") : null,
+    ].filter(Boolean).join(" · ") || "Sin datos",
     summary:
       level === "sin_datos"
         ? "No hay datos suficientes para evaluar condiciones de anegamiento."

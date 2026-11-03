@@ -12,6 +12,7 @@ import {
 import { assessFlood } from "./flood";
 import { assessHail } from "./hail";
 import { assessRain } from "./rain";
+import { buildVerdict } from "./verdict";
 
 /** Distancia a la que un aviso oficial se informa como "cerca" de un lugar. */
 export const NEAR_KM = 15;
@@ -113,13 +114,22 @@ export async function assessPoint(
   ];
   const degraded = sources.filter((s) => !s.ok || s.stale).map((s) => `${s.name}: ${s.error ?? "datos desactualizados"}`);
 
+  const inside = matched.filter((m) => m.relation === "dentro");
+  const hourly = (fc.value ? toHourly(fc.value, ens.value, now, 24) : []).map((h) => {
+    const t = new Date(h.time).getTime();
+    const covering = inside.filter((a) => new Date(a.onset ?? a.sent).getTime() <= t && (!a.expires || t < new Date(a.expires).getTime()));
+    // Si el aviso oficial menciona granizo y el modelo prevé tormenta en esa hora, se marca granizo posible.
+    const hail = covering.some((a) => a.phenomena.includes("granizo")) && h.condition === "tormenta";
+    return { ...h, inAlert: covering.length > 0, condition: hail ? ("granizo" as const) : h.condition };
+  });
   return {
     point: { lat: cell.lat, lon: cell.lon, snappedTo: cell.step },
+    verdict: buildVerdict(inside, assessments, hourly),
     generatedAt: now.toISOString(),
     official: matched,
     matched,
     assessments,
-    hourly: fc.value ? toHourly(fc.value, ens.value, now, 24) : [],
+    hourly,
     sources,
     degraded,
     ownEstimatesMode: env.OWN_ESTIMATES_MODE,

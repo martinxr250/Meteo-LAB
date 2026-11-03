@@ -34,8 +34,8 @@ export type Level = "sin_datos" | "bajo" | "atento" | "alto" | "muy_alto";
 export const LEVEL_ORDER: Record<Level, number> = { sin_datos: -1, bajo: 0, atento: 1, alto: 2, muy_alto: 3 };
 
 export const LEVEL_LABEL: Record<Level, string> = {
-  sin_datos: "Sin datos suficientes",
-  bajo: "Señal baja",
+  sin_datos: "Sin datos",
+  bajo: "Bajo",
   atento: "Atención",
   alto: "Alto",
   muy_alto: "Muy alto",
@@ -102,6 +102,8 @@ export interface PhenomenonAssessment {
   /** Tipo de magnitud que se muestra: "probabilidad calibrada", "frecuencia en el ensamble", "índice de condiciones". */
   metric: string;
   window: { from: string; to: string } | null;
+  /** Dato corto para tablas: cifras, sin prosa. */
+  indicator: string;
   summary: string;
   method: string;
   uncertainty: string;
@@ -111,8 +113,19 @@ export interface PhenomenonAssessment {
   modelVersion: string;
 }
 
+export interface Verdict {
+  level: Level;
+  word: string;
+  line: string;
+  from: string | null;
+  to: string | null;
+  basis: "oficial" | "estimacion" | "sin_datos";
+  facts: { label: string; value: string }[];
+}
+
 export interface PointRisk {
   point: { lat: number; lon: number; snappedTo: number };
+  verdict: Verdict;
   generatedAt: string;
   official: OfficialAlert[];
   assessments: PhenomenonAssessment[];
@@ -131,7 +144,22 @@ export interface HourlyPoint {
   cape: number | null;
   freezingLevel: number | null;
   ensembleP10mm1h: number | null;
+  weatherCode: number | null;
+  /** Qué se espera en esa hora, en palabras simples. "granizo" siempre significa POSIBLE, nunca confirmado. */
+  condition: HourCondition;
+  /** La hora cae dentro de un aviso oficial vigente para el lugar. */
+  inAlert: boolean;
 }
+
+export type HourCondition = "seco" | "lluvia" | "lluvia_fuerte" | "tormenta" | "granizo";
+
+export const HOUR_CONDITION_LABEL: Record<HourCondition, string> = {
+  seco: "Sin lluvia",
+  lluvia: "Lluvia",
+  lluvia_fuerte: "Lluvia fuerte",
+  tormenta: "Tormenta",
+  granizo: "Granizo posible",
+};
 
 export interface Recommendation {
   text: string;

@@ -55,9 +55,9 @@ export function PrefsView() {
   if (!enabled) {
     return (
       <div className="mx-auto grid max-w-3xl gap-6 pt-2">
-        <h1 className="display-title text-4xl sm:text-5xl">Preferencias</h1>
+        <h1 className="display-title text-4xl">Preferencias</h1>
         <Glass className="p-5 text-sm">
-          {s.accounts ? <>Para configurar notificaciones necesitás <Link href="/ingresar" className="text-primary underline">ingresar</Link>.</> : "Las notificaciones requieren cuentas, que no están configuradas en este entorno (modo local). Podés consultar el estado en Resumen y Alertas."}
+          {s.accounts ? <><Link href="/ingresar" className="text-primary underline">Ingresá</Link> para recibir notificaciones.</> : "Notificaciones disponibles con cuenta (no configurado en este entorno)."}
         </Glass>
       </div>
     );
@@ -65,21 +65,16 @@ export function PrefsView() {
 
   return (
     <div className="mx-auto grid max-w-3xl gap-6 pt-2">
-      <div>
-        <p className="text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">Tu cuenta</p>
-        <h1 className="display-title text-4xl sm:text-5xl">Preferencias</h1>
-      </div>
+      <h1 className="display-title text-4xl">Preferencias</h1>
 
       <Glass className="grid gap-4 p-5">
-        <SectionTitle eyebrow="Notificaciones" title="Avisos en este dispositivo" />
+        <SectionTitle title="Avisos en este dispositivo" />
         <div className="flex flex-wrap items-center gap-3 text-sm">
           <BellRing className="size-5 text-primary" />
           <span>Permiso del navegador: <strong>{perm === "granted" ? "concedido" : perm === "denied" ? "bloqueado" : perm === "no-soportado" ? "no disponible" : "sin pedir"}</strong></span>
           <Button size="sm" onClick={enablePush} disabled={perm === "denied"}>Activar notificaciones</Button>
         </div>
-        <p className="text-xs text-muted-foreground">
-          Los avisos oficiales del SMN que incluyan tus lugares se notifican siempre (incluso en horario silencioso). Las estimaciones propias están en modo sombra: {s.ownEstimatesMode === "shadow" ? "por ahora no se envían." : "se envían según tu nivel mínimo."}
-        </p>
+        <p className="text-xs text-muted-foreground">Los avisos del SMN te llegan siempre, incluso en horario silencioso.</p>
         {p && (
           <>
             <Field label="Nivel mínimo para estimaciones del sistema">
@@ -131,7 +126,7 @@ function MfaCard({ active }: { active: boolean }) {
   });
   return (
     <Glass className="grid gap-3 p-5">
-      <SectionTitle eyebrow="Seguridad" title="Verificación en dos pasos" />
+      <SectionTitle title="Verificación en dos pasos" />
       <p className="flex items-center gap-2 text-sm"><ShieldCheck className="size-5 text-primary" /> {active ? "Sesión verificada con segundo factor." : "Obligatoria para moderar reportes y entrar al panel operativo."}</p>
       {!active && !enroll && <Button size="sm" className="justify-self-start" onClick={() => start.mutate()}>Configurar app de autenticación</Button>}
       {enroll && (

@@ -1,10 +1,9 @@
 "use client";
 
-import { Briefcase, Car, Crosshair, Home, MapPin, Plus, Trash2 } from "lucide-react";
+import { Briefcase, Car, Crosshair, Home, MapPin, Trash2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useSession } from "@/components/providers/session";
 import { Button, Field, Glass, inputClass, SectionTitle } from "@/components/ui/primitives";
 import { usePlaces } from "@/hooks/use-places";
 import { PLACE_KIND_LABEL, type PlaceKind } from "@/lib/domain";
@@ -23,7 +22,6 @@ function getPosition(): Promise<GeolocationPosition> {
 
 export function PlacesView() {
   const { places, add, remove, parkCar, remote } = usePlaces();
-  const { accounts, user } = useSession();
   const [draft, setDraft] = useState<{ lat: number; lon: number } | null>(null);
   const [kind, setKind] = useState<Exclude<PlaceKind, "auto">>("casa");
   const [label, setLabel] = useState("");
@@ -63,39 +61,29 @@ export function PlacesView() {
   return (
     <div className="mx-auto grid max-w-6xl gap-6 pt-2">
       <div>
-        <p className="text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">Tus lugares</p>
-        <h1 className="display-title text-4xl sm:text-5xl">Lugares guardados</h1>
-        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-          {remote
-            ? "Se guardan en tu cuenta con una precisión de ~110 m (no necesitamos más: los pronósticos tienen celdas de varios km)."
-            : accounts && !user
-              ? "Sin sesión iniciada: tus lugares se guardan solo en este navegador. Ingresá para recibir notificaciones."
-              : "Modo local: tus lugares se guardan solo en este navegador, con una precisión de ~110 m."}
-        </p>
+        <h1 className="display-title text-4xl">Lugares</h1>
+        {!remote && <p className="mt-1 text-sm text-muted-foreground">Se guardan solo en este navegador.</p>}
       </div>
 
-      <Glass strong className="grid gap-4 p-5 sm:grid-cols-[auto_1fr_auto] sm:items-center">
-        <span className="grid size-14 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/30"><Car className="size-6" /></span>
+      <Glass strong id="auto" className="grid gap-4 p-5 sm:grid-cols-[1fr_auto] sm:items-center">
         <div>
-          <h2 className="text-lg font-semibold">Dejé el auto acá</h2>
+          <h2 className="font-semibold">Mi auto</h2>
           <p className="text-sm text-muted-foreground">
-            {car?.watchUntil
-              ? `Vigilando tu auto desde ${fmtDateTime(car.createdAt)} · ${until(car.watchUntil)}. Al vencer, borramos la ubicación.`
-              : "Guarda tu ubicación actual y vigila granizo cerca del auto por un tiempo limitado. Después se borra sola."}
+            {car?.watchUntil ? `Guardado ${fmtDateTime(car.createdAt)} · ${until(car.watchUntil)}` : "Guardá dónde lo dejaste y te avisamos si se viene piedra."}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <select value={hours} onChange={(e) => setHours(Number(e.target.value))} className={`${inputClass} h-10 w-auto`} aria-label="Duración de la vigilancia">
             {[2, 4, 8, 12, 24].map((h) => <option key={h} value={h}>{h} h</option>)}
           </select>
-          <Button onClick={park} disabled={parkCar.isPending}><Crosshair /> {car ? "Actualizar" : "Dejé el auto acá"}</Button>
+          <Button onClick={park} disabled={parkCar.isPending}>{car ? "Actualizar" : "Dejé el auto acá"}</Button>
           {car && <Button variant="ghost" size="icon" aria-label="Dejar de vigilar el auto" onClick={() => remove.mutate(car.id)}><Trash2 /></Button>}
         </div>
       </Glass>
 
       <div className="grid gap-4 lg:grid-cols-[1fr_1.2fr]">
         <Glass className="p-5">
-          <SectionTitle eyebrow="Nuevo lugar" title="Agregar casa, trabajo u otro" />
+          <SectionTitle title="Agregar lugar" />
           <div className="mt-4 grid gap-3">
             <div className="flex flex-wrap gap-2">
               {(["casa", "trabajo", "otro"] as const).map((k) => {
@@ -107,26 +95,26 @@ export function PlacesView() {
                 );
               })}
             </div>
-            <Field label="Nombre" hint="Opcional. Evitá poner tu dirección exacta.">
+            <Field label="Nombre">
               <input className={inputClass} value={label} maxLength={60} onChange={(e) => setLabel(e.target.value)} placeholder={PLACE_KIND_LABEL[kind]} />
             </Field>
             <div className="rounded-xl bg-muted/60 p-3 text-sm">
-              {draft ? <>Punto elegido: {draft.lat.toFixed(3)}, {draft.lon.toFixed(3)}</> : "Tocá el mapa para elegir el punto o usá tu ubicación."}
+              {draft ? "Punto elegido en el mapa" : "Tocá el mapa o usá tu ubicación"}
             </div>
             <div className="flex flex-wrap gap-2">
-              <Button variant="glass" onClick={useMyLocation}><Crosshair /> Usar mi ubicación</Button>
-              <Button onClick={save} disabled={!draft || add.isPending}><Plus /> Guardar lugar</Button>
+              <Button variant="glass" onClick={useMyLocation}><Crosshair /> Mi ubicación</Button>
+              <Button onClick={save} disabled={!draft || add.isPending}>Guardar</Button>
             </div>
           </div>
 
-          <SectionTitle className="mt-6" eyebrow={`${places.length} de 10`} title="Guardados" />
+          <SectionTitle className="mt-6" title="Guardados" meta={`${places.length} de 10`} />
           <ul className="mt-3 grid gap-2">
             {!places.length && <li className="text-sm text-muted-foreground">Todavía no guardaste lugares.</li>}
             {places.map((p) => {
               const Icon = ICON[p.kind];
               return (
                 <li key={p.id} className="flex items-center gap-3 rounded-2xl bg-[var(--glass-strong)] p-3">
-                  <span className="grid size-9 place-items-center rounded-xl bg-primary-soft text-primary"><Icon className="size-4" /></span>
+                  <Icon className="size-4 text-muted-foreground" />
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-medium">{p.label}</p>
                     <p className="text-xs text-muted-foreground">{PLACE_KIND_LABEL[p.kind]}{p.watchUntil ? ` · ${until(p.watchUntil)}` : ""}</p>

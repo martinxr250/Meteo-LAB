@@ -64,6 +64,7 @@ export function assessRain(ens: EnsembleSeries | null, fc: ForecastSeries | null
       probability: null,
       metric: "—",
       window,
+      indicator: "Ensamble no disponible",
       summary: "No pudimos obtener los ensambles de pronóstico. No es posible estimar lluvia intensa ahora.",
       method: RAIN_MODEL_VERSION,
       uncertainty: "Sin datos.",
@@ -105,6 +106,7 @@ export function assessRain(ens: EnsembleSeries | null, fc: ForecastSeries | null
     probability: calibrated ?? worst.p,
     metric: calibrated != null ? `Probabilidad calibrada de ≥ 20 mm/24 h (${promoted!.version})` : `Frecuencia en el ensamble de ${worst.label} (sin calibrar)`,
     window,
+    indicator: results.map((r) => `${r.label.replace("≥ ", "≥")} ${pct(r.p)}`).join(" · "),
     summary:
       level === "bajo"
         ? `Los ensambles muestran señal baja de lluvia intensa en las próximas 24 h. ${detail}.`

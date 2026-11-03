@@ -36,3 +36,27 @@ export function until(iso: string | null | undefined, now = Date.now()) {
 export function pct(p: number | null | undefined) {
   return p == null ? "s/d" : `${Math.round(p * 100)} %`;
 }
+
+/** "hoy", "mañana" o el día de la semana, en hora de Córdoba. */
+function dayWord(d: Date, now = new Date()) {
+  const key = (x: Date) => new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(x);
+  const tomorrow = new Date(now.getTime() + 86_400_000);
+  if (key(d) === key(now)) return "Hoy";
+  if (key(d) === key(tomorrow)) return "Mañana";
+  const w = new Intl.DateTimeFormat("es-AR", { timeZone: TZ, weekday: "long" }).format(d);
+  return w[0].toUpperCase() + w.slice(1);
+}
+
+/** "Mañana de 15:00 a 21:00" · "Hoy desde las 18:00". */
+export function whenRange(from: string | null, rawTo: string | null) {
+  if (!from) return null;
+  // Las vigencias del SMN terminan en hh:59:59: se muestran como la hora redonda siguiente.
+  const to = rawTo && new Date(rawTo).getSeconds() === 59 ? new Date(new Date(rawTo).getTime() + 1000).toISOString() : rawTo;
+  const f = new Date(from);
+  const start = f.getTime() < Date.now() ? "Ahora" : `${dayWord(f)} de ${fmtTime(from)}`;
+  if (!to) return start === "Ahora" ? "Ahora" : `${dayWord(f)} desde las ${fmtTime(from)}`;
+  const t = new Date(to);
+  const sameDay = dayWord(f) === dayWord(t);
+  if (start === "Ahora") return `Ahora, hasta ${sameDay ? "las " : `${dayWord(t).toLowerCase()} a las `}${fmtTime(to)}`;
+  return `${start} a ${sameDay ? "" : `${dayWord(t).toLowerCase()} `}${fmtTime(to)}`;
+}

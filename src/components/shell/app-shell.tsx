@@ -73,15 +73,10 @@ export function AppShell({ children }: { children: ReactNode }) {
         className={cn("hidden shrink-0 p-3 pr-0 transition-[width] md:block", mini ? "w-[5.5rem]" : "w-[16.5rem]")}
         aria-label="Navegación principal"
       >
-        <div className="glass glass-sheen flex h-full flex-col rounded-3xl">
+        <div className="glass flex h-full flex-col rounded-3xl">
           <Link href="/resumen" className={cn("flex items-center gap-2.5 px-5 pt-5 pb-5", mini && "justify-center px-0")} aria-label="Meteo-LAB, inicio">
             <Logo />
-            {!mini && (
-              <span className="leading-tight">
-                <Wordmark />
-                <span className="block text-[10px] font-medium tracking-wide text-muted-foreground uppercase">Prevención meteorológica</span>
-              </span>
-            )}
+            {!mini && <Wordmark />}
           </Link>
           <nav className="grid gap-1 px-3">
             {NAV.map((n) => (
@@ -90,7 +85,6 @@ export function AppShell({ children }: { children: ReactNode }) {
             {session.user && session.mfa && <NavLink href="/operaciones" label="Operaciones" icon={Activity} active={pathname.startsWith("/operaciones")} mini={mini} />}
           </nav>
           <div className="mt-auto grid gap-2 p-3">
-            {!mini && <CoverageCard />}
             <AccountButton mini={mini} />
           </div>
         </div>
@@ -152,7 +146,7 @@ function NavLink({ href, icon: Icon, label, active, mini }: { href: string; icon
       title={mini ? label : undefined}
       className={cn(
         "flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-[var(--glass-strong)] hover:text-foreground",
-        active && "bg-primary text-primary-foreground shadow-lg shadow-primary/25 hover:bg-primary hover:text-primary-foreground",
+        active && "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground",
         mini && "mx-auto size-12 justify-center rounded-full p-0",
       )}
     >
@@ -162,20 +156,11 @@ function NavLink({ href, icon: Icon, label, active, mini }: { href: string; icon
   );
 }
 
-function CoverageCard() {
-  return (
-    <div className="rounded-2xl bg-brand-soft/70 p-3 text-xs">
-      <p className="font-semibold">Cobertura inicial</p>
-      <p className="mt-0.5 text-muted-foreground">Córdoba Capital y alrededores. Arquitectura preparada para todo el país.</p>
-    </div>
-  );
-}
-
 function AccountButton({ mini }: { mini: boolean }) {
   const { accounts, user } = useSession();
   const router = useRouter();
   if (!accounts) {
-    return mini ? null : <p className="px-1 text-[11px] text-muted-foreground">Modo local: tus lugares se guardan solo en este navegador.</p>;
+    return null;
   }
   if (!user) {
     return (

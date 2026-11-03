@@ -45,16 +45,13 @@ export function ReportsView() {
   return (
     <div className="mx-auto grid max-w-5xl gap-6 pt-2">
       <div>
-        <p className="text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">Comunidad</p>
-        <h1 className="display-title text-4xl sm:text-5xl">Reportes comunitarios</h1>
-        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-          Contanos qué ves. Los reportes se moderan antes de mostrarse, se publican con ubicación aproximada (~1 km) y <strong>no se usan como verdad para entrenar modelos</strong> sin verificación cruzada.
-        </p>
+        <h1 className="display-title text-4xl">Reportes</h1>
+        <p className="mt-1 text-sm text-muted-foreground">¿Cae piedra o se inunda tu calle? Contalo. Se publica moderado y con ubicación aproximada.</p>
       </div>
 
       {!enabled ? (
         <Glass className="p-5 text-sm">
-          {accounts ? <>Para enviar reportes necesitás <Link href="/ingresar" className="text-primary underline">ingresar</Link>. Así evitamos abusos y podemos moderar.</> : "Los reportes requieren cuentas, que no están configuradas en este entorno (modo local)."}
+          {accounts ? <><Link href="/ingresar" className="text-primary underline">Ingresá</Link> para enviar reportes.</> : "Disponible con cuenta (no configurado en este entorno)."}
         </Glass>
       ) : (
         <div className="grid gap-4 lg:grid-cols-2">
@@ -72,7 +69,7 @@ export function ReportsView() {
                 </select>
               </Field>
             )}
-            <Field label="Descripción (opcional)" hint="Sin datos personales. Máximo 500 caracteres.">
+            <Field label="Comentario (opcional)">
               <textarea className={`${inputClass} h-24 py-2`} maxLength={500} value={desc} onChange={(e) => setDesc(e.target.value)} />
             </Field>
             <div className="flex flex-wrap items-center gap-2">
