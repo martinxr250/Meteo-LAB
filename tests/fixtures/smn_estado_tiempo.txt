@@ -1,0 +1,121 @@
+Azul;02-noviembre-2026;22:00;Despejado;15 km;16.6;No se calcula; 64;Sudeste  13;997.7 / 
+ Bahía Blanca;02-noviembre-2026;22:00;Algo nublado;15 km;9.2;7.2; 85;Este  13;1006.8 / 
+ Benito Juárez;02-noviembre-2026;21:00;Despejado;15 km;14;No se calcula; 84;Sur  3;990.6 / 
+ Bolívar;02-noviembre-2026;21:00;Algo nublado;15 km;20;No se calcula; 83;Calma;1003 / 
+ Campo de Mayo;02-noviembre-2026;21:00;Despejado;10 km;19;No se calcula; 84;Sur  1;1011 / 
+ Coronel Suarez;02-noviembre-2026;21:00;Parcialmente nublado;10 km;15.1;No se calcula; 69;Sudeste  14;987.6 / 
+ Dolores;02-noviembre-2026;20:00;Algo nublado;10 km;19.8;No se calcula; 85;Este  11;1012.2 / 
+ El Palomar;02-noviembre-2026;22:00;Despejado;10 km;16.3;No se calcula; 88;Calma;1012.2 / 
+ Ezeiza;02-noviembre-2026;22:00;Algo nublado;10 km;18.3;No se calcula; 84;Sudeste  7;1011.6 / 
+ Junín;02-noviembre-2026;22:00;Algo nublado;12 km;18.2;No se calcula; 75;Este  3;1004.6 / 
+ La Plata;02-noviembre-2026;22:00;Algo nublado;10 km;16.8;No se calcula; 95;Este  3;1012.2 / 
+ Las Flores;02-noviembre-2026;18:00;Parcialmente nublado;15 km;25;No se calcula; 54;Sudeste  3;1006.9 / 
+ Mar del Plata;02-noviembre-2026;22:00;Despejado;10 km;14;No se calcula; 95;Sudoeste  5;1013 / 
+ Mariano Moreno;02-noviembre-2026;20:00;Algo nublado;10 km;21.3;No se calcula; 73;Sur  3;1009 / 
+ Merlo;02-noviembre-2026;20:00;Despejado;10 km;20.4;No se calcula; 86;Sur  9;1010.4 / 
+ Morón;02-noviembre-2026;22:00;Despejado;10 km;20;No se calcula; 71;Sur  3;1010.5 / 
+ Nueve de Julio;02-noviembre-2026;21:00;Despejado;15 km;19.8;No se calcula; 64;Calma;1005 / 
+ Olavarría;02-noviembre-2026;15:00;Algo nublado;15 km;26.3;No se calcula; 31;Sudoeste  11;992.6 / 
+ Pehuajó;02-noviembre-2026;21:00;Algo nublado;15 km;20;No se calcula; 73;Este  3;1003.6 / 
+ Pigué;02-noviembre-2026;21:00;Parcialmente nublado;20 km;14;No se calcula; 68;Este  14;978.6 / 
+ Punta Indio B.A.;02-noviembre-2026;21:00;Despejado;10 km;17.8;No se calcula; 91;Este  5;1012.4 / 
+ San Fernando;02-noviembre-2026;22:00;Despejado;10 km;18.7;No se calcula; 86;Calma;1013 / 
+ Tandil;02-noviembre-2026;21:00;Algo nublado;15 km;16.7;No se calcula; 67;Sur  14;994.1 / 
+ Trenque Lauquen;02-noviembre-2026;15:00;Parcialmente nublado;15 km;26.4;No se calcula; 37;Sur  18;1001.3 / 
+ Tres Arroyos;02-noviembre-2026;21:00;Despejado con neblina;8 km;11.2;No se calcula; 88;Sur  7;1002 / 
+ Villa Gesell;02-noviembre-2026;21:00;Despejado;10 km;16.1;No se calcula; 93;Este  3;1013.4 / 
+ Aeroparque Buenos Aires;02-noviembre-2026;22:00;Algo nublado;10 km;21.2;No se calcula; 84;Este  13;1013.3 / 
+ Buenos Aires;02-noviembre-2026;22:00;Algo nublado;10 km;21.8;No se calcula; 79;Noreste  5;1011.4 / 
+ Catamarca;02-noviembre-2026;22:00;Nublado;20 km;23.8;No se calcula; 55;Noreste  18;955.8 / 
+ Tinogasta;02-noviembre-2026;21:00;Parcialmente nublado;20 km;24;No se calcula; 45;Sur  33;875.3 / 
+ Pcia. Roque Saenz Peña;02-noviembre-2026;21:00;Algo nublado;20 km;24.5;No se calcula; 80;Este  7;997.8 / 
+ Resistencia;02-noviembre-2026;22:00;Despejado;15 km;21.8;No se calcula; 91;Noreste  9;1004.1 / 
+ Comodoro Rivadavia;02-noviembre-2026;22:00;Despejado;30 km;10.2;No se calcula; 68;Oeste  7;1003.8 / 
+ Esquel;02-noviembre-2026;22:00;Despejado;30 km;11.7;No se calcula; 48;Oeste  11;919.4 / 
+ Paso De Indios;02-noviembre-2026;21:00;Parcialmente nublado;45 km;13;No se calcula; 50;Oeste  9;953.8 / 
+ Puerto Madryn;02-noviembre-2026;22:00;Despejado;30 km;11.1;No se calcula; 58;Noreste  20;998.2 / 
+ Trelew;02-noviembre-2026;22:00;Algo nublado;30 km;13.4;No se calcula; 49;Norte  22;1009.4 / 
+ Córdoba;02-noviembre-2026;22:00;Cubierto;15 km;19.8;No se calcula; 85;Calma;956.1 / 
+ Córdoba Observatorio;02-noviembre-2026;22:00;Nublado;10 km;23.8;No se calcula; 55;Este  9;964 / 
+ Esc. Aviación Militar;02-noviembre-2026;20:00;Nublado;10 km;23.6;No se calcula; 57;Este  5;955 / 
+ Laboulaye;02-noviembre-2026;21:00;Nublado;10 km;19.7;No se calcula; 76;Este  3;996.1 / 
+ Marcos Juárez;02-noviembre-2026;20:00;Nublado;20 km;22.2;No se calcula; 61;Sudeste  14;998.4 / 
+ Pilar Obs.;02-noviembre-2026;21:00;Cubierto;10 km;22.9;No se calcula; 63;Este  3;973 / 
+ Río Cuarto;02-noviembre-2026;21:00;Nublado;15 km;20.4;No se calcula; 53;Norte  11;963 / 
+ Villa Dolores;02-noviembre-2026;21:00;Nublado;30 km;21.6;No se calcula; 54;Noreste  11;944.6 / 
+ Villa María Del Río Seco;02-noviembre-2026;21:00;Cubierto;10 km;21.2;No se calcula; 85;Calma;972.1 / 
+ Corrientes;02-noviembre-2026;22:00;Algo nublado;10 km;23.1;No se calcula; 83;Este  3;1002.6 / 
+ Ituzaingó;02-noviembre-2026;21:00;Parcialmente nublado;15 km;23.4;No se calcula; 86;Norte  11;1001.3 / 
+ Mercedes;02-noviembre-2026;21:00;Parcialmente nublado;15 km;23.4;No se calcula; 70;Este  9;997.8 / 
+ Monte Caseros;02-noviembre-2026;22:00;Algo nublado;20 km;22;No se calcula; 77;Sur  13;1005.2 / 
+ Paso De Los Libres;02-noviembre-2026;21:00;Algo nublado;10 km;23.7;No se calcula; 76;Sur  9;1002.5 / 
+ Concordia;02-noviembre-2026;21:00;Despejado;15 km;23.1;No se calcula; 62;Sur  11;1007.8 / 
+ Gualeguaychú;02-noviembre-2026;21:00;Algo nublado;15 km;21;No se calcula; 77;Sudeste  3;1010 / 
+ Paraná;02-noviembre-2026;22:00;Nublado;15 km;20.2;No se calcula; 68;Sudeste  13;1003.4 / 
+ Formosa;02-noviembre-2026;22:00;Nublado;20 km;21.3;No se calcula; 88;Este  5;1003 / 
+ Las Lomitas;02-noviembre-2026;21:00;Algo nublado;20 km;26.6;25.8; 64;Este  24;993.2 / 
+ Mount Pleasant Airport (Islas Malvinas);02-noviembre-2026;22:00;Cubierto;45 km;5.6;2.0; 78;Oeste  18;996.1 / 
+ La Quiaca;02-noviembre-2026;20:00;Algo nublado;30 km;20.9;No se calcula; 19;Noroeste  14;671.2 / 
+ Jujuy;02-noviembre-2026;22:00;Cubierto;10 km;22.8;No se calcula; 68;Sur  7;908.8 / 
+ Jujuy Universidad Nacional;02-noviembre-2026;21:00;Cubierto;12 km;22.4;No se calcula; 73;Sudeste  3;866.4 / 
+ General Pico;02-noviembre-2026;21:00;Parcialmente nublado;20 km;22.1;No se calcula; 51;Este  14;995.6 / 
+ Victorica;02-noviembre-2026;21:00;Parcialmente nublado con relámpagos sin truenos;40 km;21.8;No se calcula; 42;Este  14;974.6 / 
+ Santa Rosa;02-noviembre-2026;22:00;Parcialmente nublado;30 km;18;No se calcula; 57;Este  13;990.1 / 
+ Chamical;02-noviembre-2026;21:00;Parcialmente nublado;20 km;23.5;No se calcula; 58;Noreste  9;957.2 / 
+ Chepes;02-noviembre-2026;21:00;Algo nublado;15 km;22.4;No se calcula; 62;Norte  3;935.7 / 
+ Chilecito;02-noviembre-2026;21:00;Parcialmente nublado;20 km;22.8;No se calcula; 59;Sur  11;905.9 / 
+ La Rioja;02-noviembre-2026;22:00;Parcialmente nublado;20 km;22.8;No se calcula; 70;Sudoeste  3;959.8 / 
+ Malargue;02-noviembre-2026;22:00;Algo nublado;20 km;14;No se calcula; 62;Noreste  7;854.6 / 
+ Mendoza;02-noviembre-2026;22:00;Algo nublado;15 km;20.3;No se calcula; 57;Sur  3;929.4 / 
+ Mendoza Observatorio;02-noviembre-2026;21:00;Algo nublado;15 km;18.4;No se calcula; 65;Sudoeste  5;916.2 / 
+ San Martín (Mza);02-noviembre-2026;21:00;Parcialmente nublado;15 km;21.5;No se calcula; 52;Noroeste  3;934.4 / 
+ San Rafael;02-noviembre-2026;22:00;Algo nublado;20 km;17.4;No se calcula; 62;Oeste  7;925.2 / 
+ Uspallata;02-noviembre-2026;21:00;Despejado;15 km;12.9;No se calcula; 49;Sudeste  3;806.6 / 
+ Bernardo De Irigoyen;02-noviembre-2026;21:00;Parcialmente nublado;20 km;17.4;No se calcula; 96;Sudeste  9;920.6 / 
+ Iguazú;02-noviembre-2026;22:00;Parcialmente nublado con tormenta en la hora anterior;8 km;19;No se calcula; 96;Sur  7;981 / 
+ Oberá;02-noviembre-2026;21:00;Cubierto;10 km;22.6;No se calcula; 77;Norte  3;976.9 / 
+ Posadas;02-noviembre-2026;22:00;Algo nublado;20 km;22.2;No se calcula; 85;Noreste  5;997.2 / 
+ Chapelco;02-noviembre-2026;20:00;Algo nublado;15 km;15;No se calcula; 42;Oeste  31;921 / 
+ Neuquén;02-noviembre-2026;22:00;Nublado con tormenta;7 km;16.8;No se calcula; 75;Este  7;979.8 / 
+ Bariloche;02-noviembre-2026;22:00;Algo nublado;10 km;11.1;No se calcula; 54;Oeste  25;916.8 / 
+ Cipolletti;02-noviembre-2026;21:00;Nublado con relámpagos sin truenos;25 km;20.6;No se calcula; 45;Calma;979.2 / 
+ El Bolsón;02-noviembre-2026;21:00;Algo nublado;30 km;16.1;No se calcula; 45;Calma;973.4 / 
+ Maquinchao;02-noviembre-2026;21:00;Algo nublado;40 km;14.2;No se calcula; 48;Calma;910.1 / 
+ Río Colorado;02-noviembre-2026;21:00;Algo nublado;15 km;16;No se calcula; 41;Este  9;1005 / 
+ San Antonio Oeste;02-noviembre-2026;21:00;Parcialmente nublado;30 km;15.6;No se calcula; 53;Este  14;1013 / 
+ Viedma;02-noviembre-2026;21:00;Parcialmente nublado;30 km;11;No se calcula; 71;Este  11;1015.3 / 
+ Metán;02-noviembre-2026;15:00;Cubierto con neblina;15 km;21.4;No se calcula; 79;Sudeste  3;913.1 / 
+ Orán;02-noviembre-2026;21:00;Parcialmente nublado;10 km;28.8;30.3; 56;Sudeste  9;965.4 / 
+ Rivadavia;02-noviembre-2026;21:00;Despejado;20 km;29;30.1; 53;Sur  3;978.9 / 
+ Salta;02-noviembre-2026;22:00;Cubierto;15 km;20.3;No se calcula; 76;Este  7;876.7 / 
+ Tartagal;02-noviembre-2026;21:00;Algo nublado;10 km;30.2;30.7; 52;Sur  24;954.6 / 
+ Jachal;02-noviembre-2026;21:00;Parcialmente nublado;15 km;22.9;No se calcula; 37;Sur  14;879.4 / 
+ San Juan;02-noviembre-2026;22:00;Parcialmente nublado;15 km;20.4;No se calcula; 42;Sur  7;940.4 / 
+ San Luis;02-noviembre-2026;22:00;Parcialmente nublado con tormenta sin precipitación;20 km;20.3;No se calcula; 56;Este  20;928.3 / 
+ Santa Rosa del Conlara;02-noviembre-2026;20:00;Cubierto;20 km;23.2;No se calcula; 51;Calma;938.1 / 
+ Villa Reynolds;02-noviembre-2026;22:00;Algo nublado;10 km;17.5;No se calcula; 78;Este  14;956.2 / 
+ El Calafate;02-noviembre-2026;22:00;Parcialmente nublado;30 km;10;7.9; 48;Oeste  14;979.7 / 
+ Gobernador Gregores;02-noviembre-2026;21:00;Algo nublado;45 km;11;No se calcula; 42;Oeste  46;963.4 / 
+ Perito Moreno;02-noviembre-2026;21:00;Algo nublado;50 km;11;No se calcula; 50;Oeste  46;959.2 / 
+ Puerto Deseado;02-noviembre-2026;21:00;Algo nublado;30 km;12;No se calcula; 52;Norte  24;997.1 / 
+ Río Gallegos;02-noviembre-2026;22:00;Algo nublado;30 km;10.5;No se calcula; 51;Oeste  13;998.8 / 
+ San Julián;02-noviembre-2026;21:00;Algo nublado;30 km;14;No se calcula; 36;Noroeste  25;998.6 / 
+ Santa Cruz;02-noviembre-2026;21:00;Algo nublado;30 km;13.1;No se calcula; 43;Oeste  9;989.8 / 
+ Ceres;02-noviembre-2026;21:00;Nublado;15 km;25.2;No se calcula; 67;Noreste  3;1000 / 
+ Rafaela;02-noviembre-2026;18:00;Parcialmente nublado;10 km;27.7;27.5; 49;Sudeste  14;998.7 / 
+ Reconquista;02-noviembre-2026;22:00;Parcialmente nublado;15 km;24.1;No se calcula; 84;Este  5;1004.2 / 
+ Rosario;02-noviembre-2026;22:00;Nublado;15 km;20.8;No se calcula; 73;Sudeste  5;1009.8 / 
+ Santa Fe;02-noviembre-2026;22:00;Nublado;12 km;21.9;No se calcula; 67;Sur  13;1010.4 / 
+ Sunchales;02-noviembre-2026;22:00;Nublado;15 km;21.8;No se calcula; 65;Sudeste  9;1001.3 / 
+ Venado Tuerto;02-noviembre-2026;21:00;Cubierto;10 km;19;No se calcula; 85;Este  9;999.3 / 
+ Termas de Rio Hondo;02-noviembre-2026;21:00;Nublado;12 km;21.6;No se calcula; 84;Oeste  13;978.2 / 
+ Santiago del Estero;02-noviembre-2026;22:00;Nublado;10 km;22;No se calcula; 83;Sudoeste  5;987.3 / 
+ Río Grande B.A.;02-noviembre-2026;22:00;Parcialmente nublado;30 km;9.6;5.6; 70;Oeste  37;993.8 / 
+ Ushuaia;02-noviembre-2026;22:00;Parcialmente nublado;30 km;8;5.0; 73;Sudoeste  18;986.6 / 
+ Tucumán;02-noviembre-2026;22:00;Nublado con neblina;6 km;19.7;No se calcula; 89;Oeste  7;960.2 / 
+ Base Belgrano II;02-noviembre-2026;21:00;Nublado;20 km;-17.1;-28.0; 69;Este  25;953.2 / 
+ Base Esperanza;02-noviembre-2026;21:00;Nublado;10 km;-2.5;-5.4; 86;Sur  7;980 / 
+ Base Carlini;02-noviembre-2026;21:00;Nublado con nevada en la hora anterior;7 km;-1.8;-8.1; 85;Oeste  24;982.6 / 
+ Base Marambio;02-noviembre-2026;22:00;Cubierto;15 km;-5.7;-9.9; 79;Sudeste  9;958.6 / 
+ Base Orcadas;02-noviembre-2026;21:00;Cubierto con nevada;6 km;-1.8;-6.9; 91;Oeste  16;978 / 
+ Base San Martín;02-noviembre-2026;21:00;Despejado;20 km;-8.3;-11.3; 86;Sur  5;979.4 / 

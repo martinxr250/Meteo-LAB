@@ -1,0 +1,42 @@
+{
+  "models": [
+    {
+      "name": "rain-daily",
+      "version": "lluvia-diaria-logistica-v1-20mm",
+      "status": "shadow",
+      "event": "lluvia acumulada 12Z→12Z ≥ 20 mm en el pluviómetro",
+      "features": [
+        "log1p_ecmwf_sum24h",
+        "log1p_gfs_sum24h"
+      ],
+      "coef": [
+        1.1528473498962346,
+        0.6389154487264552
+      ],
+      "intercept": -6.707485758208208,
+      "ranges": {
+        "log1p_ecmwf_sum24h": [
+          0,
+          4.428433007488037
+        ],
+        "log1p_gfs_sum24h": [
+          0,
+          4.454347296253507
+        ]
+      },
+      "metrics": {
+        "pod": 0.625,
+        "far": 0.84375,
+        "csi": 0.14285714285714285,
+        "brier": 0.01150301448848293,
+        "bss_vs_climatologia": 0.15455650864885917,
+        "pr_auc": 0.3238155077214686
+      },
+      "trainedOn": {
+        "hasta": "2025-10-01",
+        "filas": 2124,
+        "eventos": 33
+      }
+    }
+  ]
+}

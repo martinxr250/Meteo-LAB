@@ -1,0 +1,383 @@
+{
+  "generado": "2026-11-03T02:50:32+00:00",
+  "evento": "lluvia acumulada 12Z→12Z ≥ 20 mm en el pluviómetro",
+  "datos": {
+    "estaciones": [
+      "Bosque Alegre",
+      "Falda del Carmen",
+      "Jesus Maria",
+      "Pilar",
+      "Santa Sabina"
+    ],
+    "filas": {
+      "entrenamiento": 2124,
+      "validacion": 368,
+      "prueba": 1160
+    },
+    "eventos": {
+      "entrenamiento": 33,
+      "validacion": 8,
+      "prueba": 16
+    },
+    "dias_con_evento_prueba": 8,
+    "excluidas_qc": "obs > 250 mm (marcadas para revisión) y días sin pronóstico completo"
+  },
+  "modelos": {
+    "logistica[ecmwf+gfs]": {
+      "tipo": "probabilistico",
+      "umbral_decision_validacion": 0.06,
+      "tp": 10,
+      "fp": 54,
+      "fn": 6,
+      "tn": 1090,
+      "pod": 0.625,
+      "far": 0.84375,
+      "csi": 0.14285714285714285,
+      "brier": 0.01150301448848293,
+      "bss_vs_climatologia": 0.15455650864885917,
+      "pr_auc": 0.3238155077214686,
+      "ic90_csi": [
+        0.04,
+        0.24452991452991443
+      ],
+      "ic90_brier": [
+        0.005823786947227831,
+        0.018361614093736742
+      ],
+      "confiabilidad": [
+        {
+          "rango": "0.00–0.05",
+          "n": 1084,
+          "p_media": 0.005710867274495336,
+          "frecuencia_observada": 0.004612546125461255
+        },
+        {
+          "rango": "0.05–0.10",
+          "n": 38,
+          "p_media": 0.0743310819292456,
+          "frecuencia_observada": 0.07894736842105263
+        },
+        {
+          "rango": "0.10–0.20",
+          "n": 25,
+          "p_media": 0.1415116879130378,
+          "frecuencia_observada": 0.12
+        },
+        {
+          "rango": "0.20–0.40",
+          "n": 12,
+          "p_media": 0.2858423622419631,
+          "frecuencia_observada": 0.3333333333333333
+        },
+        {
+          "rango": "0.40–0.60",
+          "n": 1,
+          "p_media": 0.4569305516178799,
+          "frecuencia_observada": 1.0
+        }
+      ]
+    },
+    "logistica[solo_ecmwf]": {
+      "tipo": "probabilistico",
+      "umbral_decision_validacion": 0.02,
+      "tp": 14,
+      "fp": 180,
+      "fn": 2,
+      "tn": 964,
+      "pod": 0.875,
+      "far": 0.9278350515463918,
+      "csi": 0.07142857142857142,
+      "brier": 0.012631368518710913,
+      "bss_vs_climatologia": 0.07162524121881275,
+      "pr_auc": 0.17062965621348786,
+      "ic90_csi": [
+        0.02537749791171368,
+        0.11623588829471175
+      ],
+      "ic90_brier": [
+        0.006452814681250538,
+        0.020548172315836107
+      ],
+      "confiabilidad": [
+        {
+          "rango": "0.00–0.05",
+          "n": 1058,
+          "p_media": 0.006239018291863001,
+          "frecuencia_observada": 0.005671077504725898
+        },
+        {
+          "rango": "0.05–0.10",
+          "n": 51,
+          "p_media": 0.07159246604914404,
+          "frecuencia_observada": 0.058823529411764705
+        },
+        {
+          "rango": "0.10–0.20",
+          "n": 35,
+          "p_media": 0.12926360817624574,
+          "frecuencia_observada": 0.11428571428571428
+        },
+        {
+          "rango": "0.20–0.40",
+          "n": 16,
+          "p_media": 0.2755910846357984,
+          "frecuencia_observada": 0.1875
+        }
+      ]
+    },
+    "logistica[solo_gfs]": {
+      "tipo": "probabilistico",
+      "umbral_decision_validacion": 0.09000000000000001,
+      "tp": 10,
+      "fp": 26,
+      "fn": 6,
+      "tn": 1118,
+      "pod": 0.625,
+      "far": 0.7222222222222222,
+      "csi": 0.23809523809523808,
+      "brier": 0.010800855749998875,
+      "bss_vs_climatologia": 0.20616346228184235,
+      "pr_auc": 0.451937079369237,
+      "ic90_csi": [
+        0.05548048048048048,
+        0.4
+      ],
+      "ic90_brier": [
+        0.005053014010996185,
+        0.017802803369994263
+      ],
+      "confiabilidad": [
+        {
+          "rango": "0.00–0.05",
+          "n": 1089,
+          "p_media": 0.006468070173698922,
+          "frecuencia_observada": 0.004591368227731864
+        },
+        {
+          "rango": "0.05–0.10",
+          "n": 40,
+          "p_media": 0.07046022103219815,
+          "frecuencia_observada": 0.05
+        },
+        {
+          "rango": "0.10–0.20",
+          "n": 19,
+          "p_media": 0.13222841695385282,
+          "frecuencia_observada": 0.0
+        },
+        {
+          "rango": "0.20–0.40",
+          "n": 12,
+          "p_media": 0.25013786935830884,
+          "frecuencia_observada": 0.75
+        }
+      ]
+    },
+    "logistica[ecmwf+gfs+max3h]": {
+      "tipo": "probabilistico",
+      "umbral_decision_validacion": 0.05,
+      "tp": 10,
+      "fp": 63,
+      "fn": 6,
+      "tn": 1081,
+      "pod": 0.625,
+      "far": 0.863013698630137,
+      "csi": 0.12658227848101267,
+      "brier": 0.011550301309027402,
+      "bss_vs_climatologia": 0.15108104274415735,
+      "pr_auc": 0.32154169008474504,
+      "ic90_csi": [
+        0.024361207897793266,
+        0.22376760563380274
+      ],
+      "ic90_brier": [
+        0.005572048961841083,
+        0.018957839495904197
+      ],
+      "confiabilidad": [
+        {
+          "rango": "0.00–0.05",
+          "n": 1087,
+          "p_media": 0.005542515316815916,
+          "frecuencia_observada": 0.005519779208831647
+        },
+        {
+          "rango": "0.05–0.10",
+          "n": 36,
+          "p_media": 0.07583083682958812,
+          "frecuencia_observada": 0.08333333333333333
+        },
+        {
+          "rango": "0.10–0.20",
+          "n": 25,
+          "p_media": 0.1483479942342739,
+          "frecuencia_observada": 0.08
+        },
+        {
+          "rango": "0.20–0.40",
+          "n": 10,
+          "p_media": 0.282626828335821,
+          "frecuencia_observada": 0.3
+        },
+        {
+          "rango": "0.40–0.60",
+          "n": 2,
+          "p_media": 0.442315400601778,
+          "frecuencia_observada": 1.0
+        }
+      ]
+    },
+    "gradient_boosting[ecmwf+gfs+max3h+mes]": {
+      "tipo": "probabilistico",
+      "umbral_decision_validacion": 0.5,
+      "tp": 3,
+      "fp": 7,
+      "fn": 13,
+      "tn": 1137,
+      "pod": 0.1875,
+      "far": 0.7,
+      "csi": 0.13043478260869565,
+      "brier": 0.013623625848463808,
+      "bss_vs_climatologia": -0.0013032508755830285,
+      "pr_auc": 0.17611920707207912,
+      "ic90_csi": [
+        0.0,
+        0.1935483870967742
+      ],
+      "ic90_brier": [
+        0.007416756717324629,
+        0.02086556728006418
+      ],
+      "confiabilidad": [
+        {
+          "rango": "0.00–0.05",
+          "n": 1113,
+          "p_media": 0.004006703850041929,
+          "frecuencia_observada": 0.0071877807726864335
+        },
+        {
+          "rango": "0.05–0.10",
+          "n": 18,
+          "p_media": 0.06980050666556924,
+          "frecuencia_observada": 0.16666666666666666
+        },
+        {
+          "rango": "0.10–0.20",
+          "n": 8,
+          "p_media": 0.14295406501218605,
+          "frecuencia_observada": 0.0
+        },
+        {
+          "rango": "0.20–0.40",
+          "n": 9,
+          "p_media": 0.28178998108668396,
+          "frecuencia_observada": 0.1111111111111111
+        },
+        {
+          "rango": "0.40–0.60",
+          "n": 7,
+          "p_media": 0.5033953670191365,
+          "frecuencia_observada": 0.2857142857142857
+        },
+        {
+          "rango": "0.60–1.00",
+          "n": 5,
+          "p_media": 0.7355312675635145,
+          "frecuencia_observada": 0.4
+        }
+      ]
+    },
+    "climatologia_mensual": {
+      "tipo": "probabilistico",
+      "umbral_decision_validacion": 0.5,
+      "tp": 0,
+      "fp": 0,
+      "fn": 16,
+      "tn": 1144,
+      "pod": 0.0,
+      "far": null,
+      "csi": 0.0,
+      "brier": 0.013304453639013124,
+      "bss_vs_climatologia": 0.022155127566903965,
+      "pr_auc": 0.04915265316634714,
+      "ic90_csi": [
+        0.0,
+        0.0
+      ],
+      "ic90_brier": [
+        0.005602610022097909,
+        0.02182282256137646
+      ],
+      "confiabilidad": [
+        {
+          "rango": "0.00–0.05",
+          "n": 1037,
+          "p_media": 0.01227234393098811,
+          "frecuencia_observada": 0.007714561234329798
+        },
+        {
+          "rango": "0.05–0.10",
+          "n": 123,
+          "p_media": 0.06329113924050635,
+          "frecuencia_observada": 0.06504065040650407
+        }
+      ]
+    },
+    "ecmwf_determinista": {
+      "tipo": "determinista",
+      "regla": "ecmwf_sum ≥ 20 mm",
+      "tp": 4,
+      "fp": 23,
+      "fn": 12,
+      "tn": 1121,
+      "pod": 0.25,
+      "far": 0.8518518518518519,
+      "csi": 0.10256410256410256,
+      "ic90_csi": [
+        0.0,
+        0.17857142857142858
+      ]
+    },
+    "gfs_determinista": {
+      "tipo": "determinista",
+      "regla": "gfs_sum ≥ 20 mm",
+      "tp": 9,
+      "fp": 4,
+      "fn": 7,
+      "tn": 1140,
+      "pod": 0.5625,
+      "far": 0.3076923076923077,
+      "csi": 0.45,
+      "ic90_csi": [
+        0.16666666666666666,
+        0.6470588235294118
+      ]
+    },
+    "persistencia": {
+      "tipo": "determinista",
+      "regla": "persist_mm ≥ 20 mm",
+      "tp": 1,
+      "fp": 15,
+      "fn": 15,
+      "tn": 1122,
+      "pod": 0.0625,
+      "far": 0.9375,
+      "csi": 0.03225806451612903,
+      "ic90_csi": [
+        0.0,
+        0.09090909090909091
+      ]
+    }
+  },
+  "promocion": {
+    "candidato": "logistica[ecmwf+gfs]",
+    "criterios": {
+      "bss_positivo": true,
+      "csi_supera_mejor_baseline": false,
+      "muestra_suficiente": false,
+      "revision_meteorologica": false
+    },
+    "estado": "shadow",
+    "nota": "Ningún modelo pasa a 'promoted' sin revisión meteorológica documentada."
+  }
+}

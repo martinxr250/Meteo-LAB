@@ -1,0 +1,274 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Tema Meteo-LAB. Mismo lenguaje que Tableros (títulos finos, pastillas, riel lateral),
+ * con paleta de cielo: azul profundo para acciones, celeste para acentos y superficies de vidrio.
+ * Los colores de nivel de riesgo son semánticos y NO se mezclan con la marca.
+ */
+:root {
+  --radius: 0.95rem;
+  --background: oklch(0.962 0.014 236);
+  --foreground: oklch(0.24 0.04 252);
+  --card: oklch(0.995 0.004 236);
+  --card-foreground: oklch(0.24 0.04 252);
+  --popover: oklch(0.995 0.004 236);
+  --popover-foreground: oklch(0.24 0.04 252);
+  --primary: oklch(0.53 0.18 254);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.94 0.02 236);
+  --secondary-foreground: oklch(0.3 0.04 252);
+  --muted: oklch(0.945 0.016 236);
+  --muted-foreground: oklch(0.52 0.03 248);
+  --accent: oklch(0.93 0.035 228);
+  --accent-foreground: oklch(0.28 0.05 250);
+  --destructive: oklch(0.58 0.21 25);
+  --border: oklch(0.89 0.02 238);
+  --input: oklch(0.88 0.02 238);
+  --ring: oklch(0.62 0.15 245);
+  --brand: oklch(0.72 0.13 222);
+  --brand-foreground: oklch(0.2 0.05 245);
+  --brand-soft: oklch(0.93 0.045 222);
+  --primary-soft: oklch(0.93 0.04 252);
+  --success: oklch(0.62 0.13 170);
+
+  /* Vidrio */
+  --glass: oklch(1 0 0 / 0.62);
+  --glass-strong: oklch(1 0 0 / 0.8);
+  --glass-border: oklch(1 0 0 / 0.75);
+  --glass-edge: oklch(0.55 0.08 245 / 0.14);
+  --glass-highlight: oklch(1 0 0 / 0.9);
+  --glass-shadow: 0 1px 2px oklch(0.35 0.06 250 / 0.06), 0 12px 32px -14px oklch(0.4 0.12 250 / 0.28);
+  --ambient-a: oklch(0.8 0.1 230 / 0.55);
+  --ambient-b: oklch(0.86 0.08 205 / 0.5);
+  --ambient-c: oklch(0.78 0.11 262 / 0.35);
+
+  /* Niveles (semánticos) */
+  --lvl-none: oklch(0.62 0.02 250);
+  --lvl-low: oklch(0.62 0.11 190);
+  --lvl-watch: oklch(0.78 0.15 85);
+  --lvl-high: oklch(0.68 0.18 50);
+  --lvl-severe: oklch(0.58 0.21 25);
+  /* Colores oficiales del SMN */
+  --smn-amarilla: oklch(0.86 0.17 95);
+  --smn-naranja: oklch(0.73 0.18 55);
+  --smn-roja: oklch(0.6 0.22 27);
+}
+
+.dark {
+  --background: oklch(0.15 0.025 256);
+  --foreground: oklch(0.96 0.01 236);
+  --card: oklch(0.2 0.03 256);
+  --card-foreground: oklch(0.96 0.01 236);
+  --popover: oklch(0.21 0.032 256);
+  --popover-foreground: oklch(0.96 0.01 236);
+  --primary: oklch(0.72 0.14 242);
+  --primary-foreground: oklch(0.16 0.04 256);
+  --secondary: oklch(0.25 0.03 256);
+  --secondary-foreground: oklch(0.93 0.01 236);
+  --muted: oklch(0.24 0.03 256);
+  --muted-foreground: oklch(0.7 0.03 240);
+  --accent: oklch(0.28 0.05 245);
+  --accent-foreground: oklch(0.96 0.01 236);
+  --destructive: oklch(0.68 0.19 25);
+  --border: oklch(1 0 0 / 9%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.74 0.13 242);
+  --brand: oklch(0.8 0.11 215);
+  --brand-foreground: oklch(0.17 0.04 245);
+  --brand-soft: oklch(0.3 0.06 222);
+  --primary-soft: oklch(0.29 0.07 250);
+  --success: oklch(0.75 0.13 170);
+
+  --glass: oklch(0.24 0.035 256 / 0.55);
+  --glass-strong: oklch(0.24 0.035 256 / 0.78);
+  --glass-border: oklch(1 0 0 / 0.1);
+  --glass-edge: oklch(1 0 0 / 0.06);
+  --glass-highlight: oklch(1 0 0 / 0.12);
+  --glass-shadow: 0 1px 2px oklch(0 0 0 / 0.3), 0 18px 40px -18px oklch(0 0 0 / 0.7);
+  --ambient-a: oklch(0.45 0.14 250 / 0.45);
+  --ambient-b: oklch(0.5 0.1 215 / 0.3);
+  --ambient-c: oklch(0.4 0.12 270 / 0.3);
+
+  --lvl-none: oklch(0.6 0.02 250);
+  --lvl-low: oklch(0.72 0.1 190);
+  --lvl-watch: oklch(0.84 0.14 88);
+  --lvl-high: oklch(0.75 0.16 55);
+  --lvl-severe: oklch(0.68 0.2 25);
+}
+
+@theme inline {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-soft: var(--brand-soft);
+  --color-primary-soft: var(--primary-soft);
+  --color-success: var(--success);
+  --color-lvl-none: var(--lvl-none);
+  --color-lvl-low: var(--lvl-low);
+  --color-lvl-watch: var(--lvl-watch);
+  --color-lvl-high: var(--lvl-high);
+  --color-lvl-severe: var(--lvl-severe);
+  --color-smn-amarilla: var(--smn-amarilla);
+  --color-smn-naranja: var(--smn-naranja);
+  --color-smn-roja: var(--smn-roja);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Escena de fondo: cielo difuso detrás del vidrio. Fija para que no se mueva al desplazar. */
+.sky-scene {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(42rem 28rem at 88% -6%, var(--ambient-a), transparent 70%),
+    radial-gradient(36rem 26rem at -8% 30%, var(--ambient-b), transparent 70%),
+    radial-gradient(30rem 22rem at 60% 110%, var(--ambient-c), transparent 70%),
+    var(--background);
+}
+
+@layer components {
+/* Liquid glass: translúcido, desenfoque con saturación, borde luminoso y brillo superior. */
+.glass {
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  backdrop-filter: blur(22px) saturate(170%);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), inset 0 0 0 1px var(--glass-edge), var(--glass-shadow);
+}
+.glass-strong {
+  background: var(--glass-strong);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), inset 0 0 0 1px var(--glass-edge), var(--glass-shadow);
+}
+.glass-sheen {
+  position: relative;
+  isolation: isolate;
+}
+.glass-sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(160deg, var(--glass-highlight), transparent 38%);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: -1;
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .glass-strong {
+    background: var(--card);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* Lenguaje visual: títulos y cifras grandes y finas, pastillas y franjas rayadas. */
+.display-title {
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+}
+.display-figure {
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.hatched {
+  background-image: repeating-linear-gradient(135deg, oklch(0.5 0.03 250 / 0.22) 0 2px, transparent 2px 7px);
+}
+.dark .hatched {
+  background-image: repeating-linear-gradient(135deg, oklch(1 0 0 / 0.14) 0 2px, transparent 2px 7px);
+}
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+[data-slot="button"][data-variant="default"] {
+  background-image: linear-gradient(180deg, oklch(1 0 0 / 0.16), transparent);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.25), 0 4px 12px -6px var(--primary);
+}
+}
+
+/* MapLibre: controles en vidrio para que conversen con el resto. */
+.maplibregl-ctrl-group {
+  background: var(--glass-strong) !important;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-radius: 0.8rem !important;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow) !important;
+}
+.dark .maplibregl-ctrl-group button .maplibregl-ctrl-icon { filter: invert(1); }
+.maplibregl-ctrl-attrib {
+  background: var(--glass-strong) !important;
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+.maplibregl-ctrl-attrib a { color: inherit; }
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 color-mix(in oklch, currentColor 45%, transparent); }
+  70% { box-shadow: 0 0 0 10px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.live-dot { animation: pulse-ring 2.2s ease-out infinite; }
+
+[data-slot="skeleton"] {
+  animation: 160ms ease-out 180ms both skeleton-in, 2s cubic-bezier(0.4, 0, 0.6, 1) 340ms infinite pulse;
+}
+@keyframes skeleton-in {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
